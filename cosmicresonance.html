@@ -22,9 +22,8 @@
             background-image: radial-gradient(circle at 20% 30%, #1a2a3a 0%, #0a0c12 100%);
         }
 
-        /* Главный блок аппарата */
         .cosmic-box {
-            max-width: 700px;
+            max-width: 800px;
             width: 100%;
             background: rgba(10, 15, 25, 0.85);
             backdrop-filter: blur(4px);
@@ -35,17 +34,20 @@
             transition: all 0.2s;
         }
 
-        h1 {
+        h1, h2 {
             color: #8db5e5;
             text-align: center;
             font-weight: normal;
             letter-spacing: 2px;
-            font-size: 24px;
             border-bottom: 1px dashed #2a6a8a;
             display: inline-block;
             width: 100%;
             padding-bottom: 10px;
+            margin-top: 20px;
         }
+
+        h1 { font-size: 24px; margin-top: 0; }
+        h2 { font-size: 18px; margin-top: 30px; }
 
         .status-panel {
             display: flex;
@@ -69,44 +71,27 @@
             height: 16px;
             border-radius: 50%;
             background-color: #2a4a6a;
-            box-shadow: 0 0 4px currentColor;
             transition: 0.1s;
         }
+        .light.green { background-color: #4caf50; box-shadow: 0 0 8px #4caf50; }
+        .light.red { background-color: #f44336; box-shadow: 0 0 6px #f44336; }
 
-        .light.green {
-            background-color: #4caf50;
-            box-shadow: 0 0 8px #4caf50;
-        }
+        .status-text { font-size: 13px; letter-spacing: 1px; }
+        .small-note { font-size: 11px; color: #6a8aaa; }
 
-        .light.red {
-            background-color: #f44336;
-            box-shadow: 0 0 6px #f44336;
-        }
-
-        .status-text {
-            font-size: 13px;
-            letter-spacing: 1px;
-        }
-
-        .small-note {
-            font-size: 11px;
-            color: #6a8aaa;
-        }
-
-        textarea {
+        textarea, input {
             width: 100%;
             background: #0a1018;
             border: 1px solid #2a5a7a;
             color: #bdd4ff;
             font-family: 'Courier New', monospace;
             font-size: 15px;
-            padding: 15px;
-            margin: 15px 0;
+            padding: 12px;
+            margin: 10px 0;
             border-radius: 16px;
-            resize: vertical;
         }
-
-        textarea:focus {
+        textarea { resize: vertical; }
+        input:focus, textarea:focus {
             outline: none;
             border-color: #6a9aba;
             box-shadow: 0 0 6px #2a6a8a;
@@ -131,20 +116,15 @@
             transition: 0.2s;
             border-radius: 40px;
         }
-
         button:hover:not(:disabled) {
             background: #2a3a4a;
             border-color: #6a9aba;
             text-shadow: 0 0 4px #6a9aba;
         }
-
-        button:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-        }
+        button:disabled { opacity: 0.5; cursor: not-allowed; }
 
         .response-area {
-            margin-top: 25px;
+            margin-top: 15px;
             padding: 15px;
             background: #0a1018;
             border-radius: 16px;
@@ -153,31 +133,22 @@
             white-space: pre-wrap;
             word-break: break-word;
         }
-
-        .response-area a {
-            color: #6f9f6f;
-            text-decoration: none;
-        }
-
-        .response-area a:hover {
-            text-decoration: underline;
-        }
-
         .footer {
             text-align: center;
             margin-top: 25px;
             font-size: 11px;
             color: #4a6a8a;
         }
+        hr {
+            border-color: #2a4a6a;
+            margin: 20px 0;
+        }
 
-        /* Анимация отправки */
         @keyframes sendPulse {
             0% { text-shadow: 0 0 0 #6a9aba; box-shadow: 0 0 0 0 rgba(100, 200, 255, 0.4); }
             100% { text-shadow: 0 0 8px #6a9aba; box-shadow: 0 0 0 15px rgba(100, 200, 255, 0); }
         }
-        .sending {
-            animation: sendPulse 0.4s ease-out;
-        }
+        .sending { animation: sendPulse 0.4s ease-out; }
     </style>
 </head>
 <body>
@@ -191,33 +162,45 @@
         <div class="small-note">⏚ канал: дальний космос</div>
     </div>
 
-    <p style="margin: 10px 0; font-size: 14px; color: #aaccee;">Сообщение уйдёт в бескрайнее космическое пространство.</p>
-
-    <textarea id="cosmicMessage" rows="5" placeholder="Напиши что-нибудь..."></textarea>
-
+    <!-- === ОТПРАВКА НОВОГО СООБЩЕНИЯ === -->
+    <p style="margin: 10px 0; font-size: 14px; color: #aaccee;">Напиши что-нибудь. Это уйдёт в бескрайнее космическое пространство.</p>
+    <textarea id="cosmicMessage" rows="4" placeholder="Напиши что-нибудь..."></textarea>
     <div class="button-group">
         <button id="testBtn">📡 ТЕСТ СВЯЗИ</button>
-        <button id="sendBtn">✨ ОТПРАВИТЬ В КОСМОС</button>
+        <button id="sendBtn"> ОТПРАВИТЬ В КОСМОС</button>
     </div>
+    <div id="sendResponse" class="response-area"></div>
 
-    <div id="responseArea" class="response-area"></div>
-    <div class="footer">🌀 сигнал идёт 3–5 дней | обратной связи может не быть</div>
+    <hr>
+
+    
+    <h2>📡 ПРОВЕРИТЬ ОТВЕТ</h2>
+    <p style="font-size: 13px;">Если ты уже отправлял сигнал и получил звёздный номер — введи его здесь, чтобы получить доступ к ответу из космоса.</p>
+    <input type="text" id="checkCode" placeholder="ЗВЁЗДНЫЙ НОМЕР (например, HD 73124-0426)">
+    <button id="checkBtn">🔍 НАЙТИ ОТВЕТ</button>
+    <div id="checkResponse" class="response-area"></div>
+
+    <div class="footer"> Сигнал отправится со скоростью света в космос|Но ответа может и не быть... </div>
 </div>
 
 <script>
-    
     const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwlZA55V1R-N17owF_slHhZjylw-Jlcpi1_NTbXAhdtiMczSmM1GCo70oH4VNU90suO/exec';
 
-    
+    // === ЭЛЕМЕНТЫ ОТПРАВКИ ===
     const messageField = document.getElementById('cosmicMessage');
     const testBtn = document.getElementById('testBtn');
     const sendBtn = document.getElementById('sendBtn');
-    const responseDiv = document.getElementById('responseArea');
+    const sendResponseDiv = document.getElementById('sendResponse');
     const statusLight = document.getElementById('statusLight');
     const statusText = document.getElementById('statusText');
     const cosmicBox = document.getElementById('cosmicBox');
 
-    // === ИНДИКАТОР СВЯЗИ (проверка каждые 20 секунд) ===
+    // === ЭЛЕМЕНТЫ ПРОВЕРКИ ОТВЕТА ===
+    const checkCodeInput = document.getElementById('checkCode');
+    const checkBtn = document.getElementById('checkBtn');
+    const checkResponseDiv = document.getElementById('checkResponse');
+
+    // === ИНДИКАТОР СВЯЗИ ===
     async function updateConnectionStatus() {
         try {
             const response = await fetch(SCRIPT_URL, {
@@ -227,9 +210,7 @@
             if (response.ok) {
                 statusLight.className = 'light green';
                 statusText.innerHTML = 'СВЯЗЬ: АКТИВНА';
-            } else {
-                throw new Error();
-            }
+            } else throw new Error();
         } catch (e) {
             statusLight.className = 'light red';
             statusText.innerHTML = 'СВЯЗЬ: ПОТЕРЯНА';
@@ -238,72 +219,90 @@
     updateConnectionStatus();
     setInterval(updateConnectionStatus, 20000);
 
-    
-    function showResponse(text, isError = false) {
-        responseDiv.innerHTML = `<span style="${isError ? 'color:#cc8866' : 'color:#aaccee'}">${text}</span>`;
+    function showResponse(div, text, isError = false) {
+        div.innerHTML = `<span style="${isError ? 'color:#cc8866' : 'color:#aaccee'}">${text}</span>`;
         setTimeout(() => {
-            if (responseDiv.innerHTML === `<span style="${isError ? 'color:#cc8866' : 'color:#aaccee'}">${text}</span>`) {
-                responseDiv.innerHTML = '';
+            if (div.innerHTML === `<span style="${isError ? 'color:#cc8866' : 'color:#aaccee'}">${text}</span>`) {
+                div.innerHTML = '';
             }
-        }, 8000);
+        }, 10000);
     }
 
-    // === АНИМАЦИЯ ОТПРАВКИ ===
     function animateSend() {
         cosmicBox.classList.add('sending');
         setTimeout(() => cosmicBox.classList.remove('sending'), 400);
-        // Звук (потом добавлю)
-        // new Audio('spark_sound.mp3').play();
     }
 
-    // === ТЕСТОВАЯ ОТПРАВКА ===
+    // === ТЕСТ ===
     testBtn.addEventListener('click', async () => {
         testBtn.disabled = true;
-        showResponse("Тестовый сигнал...");
+        showResponse(sendResponseDiv, "📡 Тестовый сигнал...");
         try {
             const response = await fetch(SCRIPT_URL, {
                 method: 'POST',
                 body: JSON.stringify({ message: '[PING]', test: true })
             });
-            if (response.ok) {
-                showResponse("✅ Тест пройден. Канал открыт. Можешь отправлять настоящее сообщение.");
-            } else {
-                showResponse("❌ Тест не удался. Связь отсутствует. Попробуй позже.", true);
-            }
+            if (response.ok) showResponse(sendResponseDiv, "✅ Тест пройден. Канал открыт.");
+            else showResponse(sendResponseDiv, "❌ Тест не удался.", true);
         } catch (error) {
-            showResponse("❌ Ошибка теста. Проверь соединение.", true);
+            showResponse(sendResponseDiv, "❌ Ошибка теста.", true);
         }
         testBtn.disabled = false;
     });
 
-    
+    // === ОТПРАВКА ===
     sendBtn.addEventListener('click', async () => {
         const message = messageField.value.trim();
         if (!message) {
-            showResponse(" Поле пусто. Напиши что-нибудь...", true);
+            showResponse(sendResponseDiv, "Поле пусто. Напиши что-нибудь...", true);
             return;
         }
-
         sendBtn.disabled = true;
         animateSend();
-
         try {
             const response = await fetch(SCRIPT_URL, {
                 method: 'POST',
                 body: JSON.stringify({ message: message })
             });
             const result = await response.json();
-
             if (result.success) {
-                showResponse(` СООБЩЕНИЕ ОТПРАВЛЕНО В КОСМОС <br><br>Твой звёздный номер: <strong>${result.code}</strong><br><br>Сохрани его. Может, ты захочешь проверить сигнал... Не потеряй`);
+                showResponse(sendResponseDiv, `СООБЩЕНИЕ ОТПРАВЛЕНО В КОСМОС<br><br>Твой звёздный номер: <strong>${result.code}</strong><br><br>Не потеряй его. Быть может, кто-то услышит твой сигнал...`);
                 messageField.value = '';
             } else {
-                showResponse("❌ Ошибка отправки. Попробуй ещё раз.", true);
+                showResponse(sendResponseDiv, "❌ Ошибка отправки. Попробуй ещё раз.", true);
             }
         } catch (error) {
-            showResponse("❌ Ошибка соединения. Сигнал не был отправлен.", true);
+            showResponse(sendResponseDiv, "❌ Ошибка соединения. Сигнал не ушёл.", true);
         }
         sendBtn.disabled = false;
+    });
+
+    // === ПРОВЕРКА ОТВЕТА ===
+    checkBtn.addEventListener('click', async () => {
+        const code = checkCodeInput.value.trim();
+        if (!code) {
+            showResponse(checkResponseDiv, "Введи звёздный позывной.", true);
+            return;
+        }
+        checkBtn.disabled = true;
+        showResponse(checkResponseDiv, "🔍 Поиск ответа...");
+        try {
+            const response = await fetch(SCRIPT_URL, {
+                method: 'POST',
+                body: JSON.stringify({ checkCode: code })
+            });
+            const result = await response.json();
+            if (result.hasResponse) {
+                showResponse(checkResponseDiv, `ПОЛУЧЕН РЕЗОНАНС ИЗ КОСМОСА:<br><br>${result.response}`);
+            } else if (result.error) {
+                showResponse(checkResponseDiv, "❌ Ошибка проверки. Попробуй позже.", true);
+            } else {
+                showResponse(checkResponseDiv, "Ответа пока нет. Сигнал ещё в пути. Загляни... когда-нибудь...");
+            }
+        } catch (error) {
+            showResponse(checkResponseDiv, "❌ Ошибка соединения.", true);
+        }
+        checkBtn.disabled = false;
     });
 </script>
 </body>
