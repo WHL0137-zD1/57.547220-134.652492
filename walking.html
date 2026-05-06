@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Обсерватория </title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            user-select: none;
+        }
+
+        body {
+            background: #0a0c12;
+            font-family: 'Courier New', monospace;
+            color: #bdd4ff;
+            overflow-x: hidden;
+        }
+
+        
+        .slider {
+            width: 100%;
+            max-width: 800px;
+            margin: 20px auto;
+            text-align: center;
+        }
+
+        .slider img {
+            width: 100%;
+            border: 1px solid #2a4a6a;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.5);
+        }
+
+        .slider-buttons {
+            margin: 15px 0;
+        }
+
+        .slider-buttons button {
+            background: #1a2a3a;
+            border: 1px solid #3a6a8a;
+            color: #bdd4ff;
+            padding: 8px 20px;
+            margin: 0 10px;
+            cursor: pointer;
+            font-family: monospace;
+        }
+
+        
+        .panorama-container {
+            width: 100%;
+            height: 500px;
+            margin: 30px 0;
+            position: relative;
+            border-top: 2px solid #2a4a6a;
+            border-bottom: 2px solid #2a4a6a;
+        }
+
+        iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        .instruction {
+            text-align: center;
+            margin: 20px;
+            font-size: 14px;
+            opacity: 0.8;
+        }
+
+        hr {
+            border-color: #2a4a6a;
+            margin: 20px;
+        }
+
+        .footer {
+            text-align: center;
+            font-size: 11px;
+            margin: 20px;
+            color: #5a7a9a;
+        }
+    </style>
+</head>
+<body>
+
+<div class="slider" id="slider">
+    <img id="sliderImage" src="observatory_note1.jpg" alt="Фрагмент архива">
+    <div class="slider-buttons">
+        <button id="prevBtn">← НАЗАД</button>
+        <button id="nextBtn">ДАЛЕЕ →</button>
+    </div>
+    <div class="instruction">📜 листы архива. осталось несколько записей.</div>
+</div>
+
+<hr>
+
+<div class="panorama-container">
+    
+    <iframe src="panorama.html" title="Сферическая панорама обсерватории"></iframe>
+</div>
+
+<div class="footer">
+    ⚡ СТАНЦИЯ ПРИЁМА СИГНАЛА • ВРАЩАЙ ПАНОРАМУ МЫШКОЙ / ПАЛЬЦЕМ
+</div>
+
+<script>
+    // === ПЕРВЫЕ 4 ИЛЛЮСТРАЦИИ (замени названия на свои) ===
+    const images = [
+        "observatory_1.jpg",
+        "observatory_2.jpg",
+        "observatory_3.jpg",
+        "observatory_4.jpg"
+    ];
+    let currentIndex = 0;
+    const sliderImg = document.getElementById("sliderImage");
+    const prevBtn = document.getElementById("prevBtn");
+    const nextBtn = document.getElementById("nextBtn");
+
+    function updateImage() {
+        sliderImg.src = images[currentIndex];
+    }
+
+    prevBtn.addEventListener("click", () => {
+        if (currentIndex > 0) {
+            currentIndex--;
+            updateImage();
+        }
+    });
+
+    nextBtn.addEventListener("click", () => {
+        if (currentIndex < images.length - 1) {
+            currentIndex++;
+            updateImage();
+        }
+    });
+
+    updateImage();
+</script>
+</body>
+</html>
