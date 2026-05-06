@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Cosmic Resonance | отправка сигнала</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #0a0c12;
+            font-family: 'Courier New', monospace;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            background-image: radial-gradient(circle at 20% 30%, #1a2a3a 0%, #0a0c12 100%);
+        }
+
+        /* Главный блок аппарата */
+        .cosmic-box {
+            max-width: 700px;
+            width: 100%;
+            background: rgba(10, 15, 25, 0.85);
+            backdrop-filter: blur(4px);
+            border: 1px solid #3a6a8a;
+            border-radius: 24px;
+            padding: 25px;
+            box-shadow: 0 0 40px rgba(0, 50, 80, 0.3);
+            transition: all 0.2s;
+        }
+
+        h1 {
+            color: #8db5e5;
+            text-align: center;
+            font-weight: normal;
+            letter-spacing: 2px;
+            font-size: 24px;
+            border-bottom: 1px dashed #2a6a8a;
+            display: inline-block;
+            width: 100%;
+            padding-bottom: 10px;
+        }
+
+        .status-panel {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 20px 0;
+            padding: 15px;
+            background: #0a1018;
+            border-radius: 16px;
+            border: 1px solid #2a4a6a;
+        }
+
+        .indicator {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .light {
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background-color: #2a4a6a;
+            box-shadow: 0 0 4px currentColor;
+            transition: 0.1s;
+        }
+
+        .light.green {
+            background-color: #4caf50;
+            box-shadow: 0 0 8px #4caf50;
+        }
+
+        .light.red {
+            background-color: #f44336;
+            box-shadow: 0 0 6px #f44336;
+        }
+
+        .status-text {
+            font-size: 13px;
+            letter-spacing: 1px;
+        }
+
+        .small-note {
+            font-size: 11px;
+            color: #6a8aaa;
+        }
+
+        textarea {
+            width: 100%;
+            background: #0a1018;
+            border: 1px solid #2a5a7a;
+            color: #bdd4ff;
+            font-family: 'Courier New', monospace;
+            font-size: 15px;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 16px;
+            resize: vertical;
+        }
+
+        textarea:focus {
+            outline: none;
+            border-color: #6a9aba;
+            box-shadow: 0 0 6px #2a6a8a;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin: 15px 0;
+        }
+
+        button {
+            background: #1a2a3a;
+            border: 1px solid #3a6a8a;
+            color: #bdd4ff;
+            font-family: monospace;
+            font-size: 16px;
+            padding: 10px 20px;
+            cursor: pointer;
+            transition: 0.2s;
+            border-radius: 40px;
+        }
+
+        button:hover:not(:disabled) {
+            background: #2a3a4a;
+            border-color: #6a9aba;
+            text-shadow: 0 0 4px #6a9aba;
+        }
+
+        button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .response-area {
+            margin-top: 25px;
+            padding: 15px;
+            background: #0a1018;
+            border-radius: 16px;
+            border-left: 4px solid #5a9aba;
+            font-size: 14px;
+            white-space: pre-wrap;
+            word-break: break-word;
+        }
+
+        .response-area a {
+            color: #6f9f6f;
+            text-decoration: none;
+        }
+
+        .response-area a:hover {
+            text-decoration: underline;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 25px;
+            font-size: 11px;
+            color: #4a6a8a;
+        }
+
+        /* Анимация отправки */
+        @keyframes sendPulse {
+            0% { text-shadow: 0 0 0 #6a9aba; box-shadow: 0 0 0 0 rgba(100, 200, 255, 0.4); }
+            100% { text-shadow: 0 0 8px #6a9aba; box-shadow: 0 0 0 15px rgba(100, 200, 255, 0); }
+        }
+        .sending {
+            animation: sendPulse 0.4s ease-out;
+        }
+    </style>
+</head>
+<body>
+<div class="cosmic-box" id="cosmicBox">
+    <h1> COSMIC RESONANCE</h1>
+    <div class="status-panel">
+        <div class="indicator">
+            <div class="light" id="statusLight"></div>
+            <span class="status-text" id="statusText">ПРОВЕРКА СВЯЗИ...</span>
+        </div>
+        <div class="small-note">⏚ канал: дальний космос</div>
+    </div>
+
+    <p style="margin: 10px 0; font-size: 14px; color: #aaccee;">Сообщение уйдёт в бескрайнее космическое пространство.</p>
+
+    <textarea id="cosmicMessage" rows="5" placeholder="Напиши что-нибудь..."></textarea>
+
+    <div class="button-group">
+        <button id="testBtn">📡 ТЕСТ СВЯЗИ</button>
+        <button id="sendBtn">✨ ОТПРАВИТЬ В КОСМОС</button>
+    </div>
+
+    <div id="responseArea" class="response-area"></div>
+    <div class="footer">🌀 сигнал идёт 3–5 дней | обратной связи может не быть</div>
+</div>
+
+<script>
+    
+    const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwlZA55V1R-N17owF_slHhZjylw-Jlcpi1_NTbXAhdtiMczSmM1GCo70oH4VNU90suO/exec';
+
+    
+    const messageField = document.getElementById('cosmicMessage');
+    const testBtn = document.getElementById('testBtn');
+    const sendBtn = document.getElementById('sendBtn');
+    const responseDiv = document.getElementById('responseArea');
+    const statusLight = document.getElementById('statusLight');
+    const statusText = document.getElementById('statusText');
+    const cosmicBox = document.getElementById('cosmicBox');
+
+    // === ИНДИКАТОР СВЯЗИ (проверка каждые 20 секунд) ===
+    async function updateConnectionStatus() {
+        try {
+            const response = await fetch(SCRIPT_URL, {
+                method: 'POST',
+                body: JSON.stringify({ ping: true })
+            });
+            if (response.ok) {
+                statusLight.className = 'light green';
+                statusText.innerHTML = 'СВЯЗЬ: АКТИВНА';
+            } else {
+                throw new Error();
+            }
+        } catch (e) {
+            statusLight.className = 'light red';
+            statusText.innerHTML = 'СВЯЗЬ: ПОТЕРЯНА';
+        }
+    }
+    updateConnectionStatus();
+    setInterval(updateConnectionStatus, 20000);
+
+    
+    function showResponse(text, isError = false) {
+        responseDiv.innerHTML = `<span style="${isError ? 'color:#cc8866' : 'color:#aaccee'}">${text}</span>`;
+        setTimeout(() => {
+            if (responseDiv.innerHTML === `<span style="${isError ? 'color:#cc8866' : 'color:#aaccee'}">${text}</span>`) {
+                responseDiv.innerHTML = '';
+            }
+        }, 8000);
+    }
+
+    // === АНИМАЦИЯ ОТПРАВКИ ===
+    function animateSend() {
+        cosmicBox.classList.add('sending');
+        setTimeout(() => cosmicBox.classList.remove('sending'), 400);
+        // Звук (потом добавлю)
+        // new Audio('spark_sound.mp3').play();
+    }
+
+    // === ТЕСТОВАЯ ОТПРАВКА ===
+    testBtn.addEventListener('click', async () => {
+        testBtn.disabled = true;
+        showResponse("Тестовый сигнал...");
+        try {
+            const response = await fetch(SCRIPT_URL, {
+                method: 'POST',
+                body: JSON.stringify({ message: '[PING]', test: true })
+            });
+            if (response.ok) {
+                showResponse("✅ Тест пройден. Канал открыт. Можешь отправлять настоящее сообщение.");
+            } else {
+                showResponse("❌ Тест не удался. Связь отсутствует. Попробуй позже.", true);
+            }
+        } catch (error) {
+            showResponse("❌ Ошибка теста. Проверь соединение.", true);
+        }
+        testBtn.disabled = false;
+    });
+
+    
+    sendBtn.addEventListener('click', async () => {
+        const message = messageField.value.trim();
+        if (!message) {
+            showResponse(" Поле пусто. Напиши что-нибудь...", true);
+            return;
+        }
+
+        sendBtn.disabled = true;
+        animateSend();
+
+        try {
+            const response = await fetch(SCRIPT_URL, {
+                method: 'POST',
+                body: JSON.stringify({ message: message })
+            });
+            const result = await response.json();
+
+            if (result.success) {
+                showResponse(` СООБЩЕНИЕ ОТПРАВЛЕНО В КОСМОС <br><br>Твой звёздный номер: <strong>${result.code}</strong><br><br>Сохрани его. Может, ты захочешь проверить сигнал... Не потеряй`);
+                messageField.value = '';
+            } else {
+                showResponse("❌ Ошибка отправки. Попробуй ещё раз.", true);
+            }
+        } catch (error) {
+            showResponse("❌ Ошибка соединения. Сигнал не был отправлен.", true);
+        }
+        sendBtn.disabled = false;
+    });
+</script>
+</body>
+</html>
