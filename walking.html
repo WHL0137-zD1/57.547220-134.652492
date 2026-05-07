@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>Обсерватория | Архив</title>
+    <title>Обсерватория</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <style>
         * {
@@ -20,7 +20,6 @@
             padding: 20px;
         }
 
-        
         .slider {
             width: 100%;
             max-width: 800px;
@@ -70,25 +69,28 @@
             opacity: 0.8;
         }
 
-        /* Панорама (изначально скрыта) */
-        .panorama-section {
+        .panorama-link {
             display: none;
+            text-align: center;
             margin-top: 30px;
+            padding: 20px;
         }
 
-        .panorama-container {
-            width: 100%;
-            height: 500px;
-            position: relative;
-            border-top: 2px solid #2a4a6a;
-            border-bottom: 2px solid #2a4a6a;
-            background: #0a0c12;
+        .panorama-link a {
+            background: #1a2a3a;
+            border: 1px solid #6a9aba;
+            color: #bdd4ff;
+            padding: 12px 30px;
+            text-decoration: none;
+            font-family: monospace;
+            font-size: 18px;
+            border-radius: 40px;
+            transition: 0.2s;
         }
 
-        iframe {
-            width: 100%;
-            height: 100%;
-            border: none;
+        .panorama-link a:hover {
+            background: #2a3a4a;
+            text-shadow: 0 0 4px #8db5e5;
         }
 
         .footer {
@@ -96,29 +98,6 @@
             font-size: 11px;
             margin-top: 20px;
             color: #5a7a9a;
-        }
-
-        
-        .instruction-popup {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.85);
-            justify-content: center;
-            align-items: center;
-            z-index: 1000;
-        }
-
-        .instruction-popup img {
-            max-width: 90%;
-            max-height: 90%;
-            border: 2px solid #6a9aba;
-            border-radius: 20px;
-            box-shadow: 0 0 30px rgba(0,0,0,0.8);
-            cursor: pointer;
         }
 
         hr {
@@ -129,123 +108,71 @@
 </head>
 <body>
 
-
+<!-- === СЛАЙДЕР С АРХИВНЫМИ КАРТИНКАМИ === -->
 <div class="slider" id="slider">
-    <img id="sliderImage" src="observatory_note1.jpg" alt="Фрагмент архива">
+    <img id="sliderImage" src="" alt="Фрагмент архива">
     <div class="slider-buttons">
         <button id="prevBtn">← НАЗАД</button>
-        <button id="nextBtn" id="nextMainBtn">ДАЛЕЕ →</button>
+        <button id="nextBtn">ДАЛЕЕ →</button>
     </div>
-    <div class="instruction">📜 листы архива. найди путь к панораме.</div>
+    <div class="instruction">листы архива. найди путь к панораме.</div>
 </div>
 
-
-<div class="panorama-section" id="panoramaSection">
-    <div class="panorama-container">
-        <iframe src="panorama.html" title="Сферическая панорама обсерватории"></iframe>
-    </div>
-    <div class="footer">
-        ⚡ СТАНЦИЯ ПРИЁМА СИГНАЛА • ВРАЩАЙ ПАНОРАМУ МЫШКОЙ / ПАЛЬЦЕМ
-    </div>
+<!-- === ССЫЛКА НА ПАНОРАМУ (появляется после последней картинки) === -->
+<div class="panorama-link" id="panoramaLink">
+    <a href="panorama.html" target="_blank">🔭 ПЕРЕЙТИ К ПАНОРАМЕ</a>
+    <p style="margin-top: 10px; font-size: 12px;">откроется в новой вкладке</p>
 </div>
 
-
-<div id="instructionPopup" class="instruction-popup" style="display: none;">
-    <img id="instructionImage" src="" alt="Инструкция">
+<div class="footer">
+    ⚡ СТАНЦИЯ ПРИЁМА СИГНАЛА
 </div>
 
 <script>
     
     const archiveImages = [
-        "kondyor.jpg",
-        "observatoryinrock.png",
-        "inrock2.jpg",
-        "vhod.png"
+        "images/kondyor.jpg",  
+        "images/observatoryinrock.png",
+        "images/inrock2.png",
+        "images/vhod.png"
     ];
-    
-    
-    const instructionImageUrl = "instruction_from_stranger.jpg"; 
-    
-    
     
     let currentIndex = 0;
     const sliderImg = document.getElementById("sliderImage");
     const prevBtn = document.getElementById("prevBtn");
     const nextBtn = document.getElementById("nextBtn");
-    const panoramaSection = document.getElementById("panoramaSection");
-    const instructionPopup = document.getElementById("instructionPopup");
-    const instructionImg = document.getElementById("instructionImage");
+    const panoramaLink = document.getElementById("panoramaLink");
     
-    // ОБНОВЛЕНИЕ КАРТИНКИ И СОСТОЯНИЯ КНОПОК
     function updateImage() {
         sliderImg.src = archiveImages[currentIndex];
         
         
         if (currentIndex === archiveImages.length - 1) {
-            nextBtn.textContent = "🔭 ПЕРЕЙТИ К ПАНОРАМЕ";
+            panoramaLink.style.display = "block";
+            nextBtn.textContent = " ЗАВЕРШИТЬ ОСМОТР";
         } else {
+            panoramaLink.style.display = "none";
             nextBtn.textContent = "ДАЛЕЕ →";
         }
     }
-    
     
     prevBtn.addEventListener("click", () => {
         if (currentIndex > 0) {
             currentIndex--;
             updateImage();
-            
         }
     });
-    
     
     nextBtn.addEventListener("click", () => {
         if (currentIndex < archiveImages.length - 1) {
-            
             currentIndex++;
             updateImage();
-        } else if (currentIndex === archiveImages.length - 1) {
-            
-            panoramaSection.style.display = "block";
-            
-            panoramaSection.scrollIntoView({ behavior: "smooth", block: "start" });
         }
-    });
-    
-   
-    window.showInstruction = function(imageUrl) {
-        instructionImg.src = imageUrl || instructionImageUrl;
-        instructionPopup.style.display = "flex";
-    };
-    
-    
-    instructionPopup.addEventListener("click", () => {
-        instructionPopup.style.display = "none";
-    });
-    
-    
-    window.addEventListener("message", (event) => {
-        if (event.data === "ready") {
-            
-        }
+        
     });
     
     
     updateImage();
-</script>
-
-
-<script>
-    
-    window.addEventListener("load", () => {
-        const iframe = document.querySelector("iframe");
-        if (iframe) {
-            
-            iframe.addEventListener("load", () => {
-                
-                iframe.contentWindow.postMessage("parentReady", "*");
-            });
-        }
-    });
 </script>
 </body>
 </html>
