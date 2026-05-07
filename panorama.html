@@ -11,17 +11,40 @@
             font-family: 'Courier New', monospace;
         }
        
-        .hint {
-            position: absolute;
-            bottom: 15px;
-            left: 15px;
-            color: #aaccee;
-            background: rgba(0,0,0,0.5);
-            padding: 5px 12px;
-            border-radius: 20px;
-            font-size: 12px;
-            z-index: 20;
+        .action-panel {
+            position: fixed;
+            bottom: 30px;
+            right: 20px;
+            display: flex;
+            gap: 15px;
+            z-index: 100;
+            opacity: 0;
+            transition: opacity 1s ease;
             pointer-events: none;
+        }
+        .action-panel.visible {
+            opacity: 1;
+            pointer-events: auto;
+        }
+        .action-btn {
+            background: #1a2a3a;
+            border: 2px solid #6a9aba;
+            color: #bdd4ff;
+            font-family: monospace;
+            font-size: 16px;
+            padding: 12px 24px;
+            border-radius: 60px;
+            cursor: pointer;
+            backdrop-filter: blur(4px);
+            transition: 0.2s;
+            font-weight: bold;
+            letter-spacing: 1px;
+        }
+        .action-btn:hover {
+            background: #2a4a6a;
+            border-color: #8db5e5;
+            text-shadow: 0 0 5px #8db5e5;
+            transform: scale(1.02);
         }
         
         .instruction-popup {
@@ -35,7 +58,6 @@
             justify-content: center;
             align-items: center;
             z-index: 1000;
-            font-family: monospace;
         }
         .instruction-popup img {
             max-width: 80%;
@@ -54,17 +76,31 @@
             color: #aaccee;
             font-size: 12px;
         }
-        /* Курсор-прицел для зон */
-        .raycaster-target {
-            cursor: pointer;
+        
+        .hint {
+            position: fixed;
+            bottom: 15px;
+            left: 15px;
+            color: #aaccee;
+            background: rgba(0,0,0,0.5);
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 11px;
+            z-index: 20;
+            pointer-events: none;
         }
     </style>
 </head>
 <body>
-    <div class="hint">🔍 осмотрись (тяни мышкой / пальцем) | найди сияющие зоны</div>
+    <div class="hint">🔍 осматривай обсерваторию (тяни мышкой / пальцем)</div>
+
+    <div class="action-panel" id="actionPanel">
+        <button class="action-btn" id="instructionBtn">📜 ИНСТРУКЦИЯ</button>
+        <button class="action-btn" id="deviceBtn">📡 АППАРАТ</button>
+    </div>
 
     <div id="instructionPopup" class="instruction-popup">
-        <img id="instructionImage" src="instruction_from_siluet.jpg" alt="Инструкция">
+        <img id="instructionImage" src="instruction_from_strahger.png" alt="Инструкция">
         <div class="close-hint">⚡ нажми на картинку, чтобы закрыть</div>
     </div>
 
@@ -81,37 +117,7 @@
 
         
         const panoramaImage = "images/panorama.jpg";
-        const imgWidth = 4000;
-        const imgHeight = 2000;
         
-
-        function pixelToAngles(x, y) {
-            const lon = (x / imgWidth) * Math.PI * 2;
-            const lat = (y / imgHeight) * Math.PI - Math.PI / 2;
-            return { lon, lat };
-        }
-        
-        
-        const zones = [
-            { type: "instruction", coords: [[897,1434], [1149,1651]] },
-            { type: "device", coords: [[1046,1229], [1223,1480]] }
-        ];
-        
-        
-        function getZoneAngles(coords) {
-            let sumLon = 0, sumLat = 0;
-            for (let c of coords) {
-                const { lon, lat } = pixelToAngles(c[0], c[1]);
-                sumLon += lon;
-                sumLat += lat;
-            }
-            return { lon: sumLon / coords.length, lat: sumLat / coords.length };
-        }
-        
-        const instructionAngles = getZoneAngles(zones[0].coords);
-        const deviceAngles = getZoneAngles(zones[1].coords);
-        
-       
         const scene = new THREE.Scene();
         const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
         const renderer = new THREE.WebGLRenderer({ antialias: true });
@@ -126,24 +132,6 @@
         scene.add(sphere);
         
         
-        function createHotspot(lon, lat, radius = 0.3, type) {
-           
-            const x = 500 * Math.cos(lat) * Math.sin(lon);
-            const y = 500 * Math.sin(lat);
-            const z = 500 * Math.cos(lat) * Math.cos(lon);
-            const hotspotGeo = new THREE.SphereGeometry(radius, 16, 16);
-            const hotspotMat = new THREE.MeshBasicMaterial({ color: 0x33aaff, transparent: true, opacity: 0.4 });
-            const hotspot = new THREE.Mesh(hotspotGeo, hotspotMat);
-            hotspot.position.set(x, y, z);
-            hotspot.userData = { type: type };
-            scene.add(hotspot);
-            return hotspot;
-        }
-        
-        const instructionHotspot = createHotspot(instructionAngles.lon, instructionAngles.lat, 0.4, "instruction");
-        const deviceHotspot = createHotspot(deviceAngles.lon, deviceAngles.lat, 0.4, "device");
-        
-       
         let isDragging = false;
         let lastX = 0, lastY = 0;
         let rotationX = 0, rotationY = 0;
@@ -159,7 +147,6 @@
             const deltaY = e.clientY - lastY;
             rotationY += deltaX * 0.005;
             rotationX += deltaY * 0.005;
-            
             rotationX = Math.max(-Math.PI / 2.2, Math.min(Math.PI / 2.2, rotationX));
             sphere.rotation.x = rotationX;
             sphere.rotation.y = rotationY;
@@ -189,46 +176,36 @@
         });
         window.addEventListener('touchend', () => { isDragging = false; });
         
-        
-        const raycaster = new THREE.Raycaster();
-        const mouse = new THREE.Vector2();
-        
-        function onClick(event) {
-           
-            mouse.x = (event.clientX / renderer.domElement.clientWidth) * 2 - 1;
-            mouse.y = -(event.clientY / renderer.domElement.clientHeight) * 2 + 1;
-            
-            raycaster.setFromCamera(mouse, camera);
-            const intersects = raycaster.intersectObjects([instructionHotspot, deviceHotspot]);
-            
-            if (intersects.length > 0) {
-                const hit = intersects[0].object;
-                const type = hit.userData.type;
-                
-                if (type === "instruction") {
-                    const popup = document.getElementById('instructionPopup');
-                    popup.style.display = 'flex';
-                } else if (type === "device") {
-                    window.location.href = "cosmicresonance.html";
-                }
-            }
-        }
-        
-        renderer.domElement.addEventListener('click', onClick);
-        
-        
         function animate() {
             requestAnimationFrame(animate);
             renderer.render(scene, camera);
         }
         animate();
         
-        console.log("🔭 Панорама загружена. Синие области (направления),  нужны чтобы взаимодействовать.");
         
+        setTimeout(() => {
+            document.getElementById('actionPanel').classList.add('visible');
+        }, 3000);
+        
+        
+        const instructionBtn = document.getElementById('instructionBtn');
+        const deviceBtn = document.getElementById('deviceBtn');
         const popup = document.getElementById('instructionPopup');
+        
+        instructionBtn.addEventListener('click', () => {
+            popup.style.display = 'flex';
+        });
+        
+        deviceBtn.addEventListener('click', () => {
+            window.location.href = "cosmicresonance.html";
+        });
+        
+        
         popup.addEventListener('click', () => {
             popup.style.display = 'none';
         });
+        
+        console.log("🔭 Панорама загружена. Кнопки появятся через 3 секунды.");
     </script>
 </body>
 </html>
