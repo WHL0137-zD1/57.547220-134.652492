@@ -8,44 +8,78 @@
         body {
             margin: 0;
             overflow: hidden;
-            background: #0a0c12;
             font-family: 'Courier New', monospace;
         }
-        
-        
-        .info {
-            position: fixed;
-            bottom: 15px;
-            left: 15px;
-            color: #8db5e5;
-            background: rgba(0,0,0,0.6);
-            padding: 5px 12px;
-            border-radius: 20px;
-            font-size: 12px;
+       
+        .hotspot {
+            position: absolute;
+            background: rgba(100, 200, 255, 0.2);
+            border: 2px solid #6af;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: 0.2s;
             z-index: 10;
-            pointer-events: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #aaf;
+            font-size: 14px;
+            backdrop-filter: blur(4px);
+        }
+        .hotspot:hover {
+            background: rgba(100, 200, 255, 0.5);
+            border-color: #fff;
+            box-shadow: 0 0 12px #6af;
         }
         
-        
-        .status {
+        .instruction-popup {
+            display: none;
             position: fixed;
-            bottom: 15px;
-            right: 15px;
-            color: #aaccee;
-            background: rgba(0,0,0,0.5);
-            padding: 5px 12px;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.85);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            font-family: monospace;
+        }
+        .instruction-popup img {
+            max-width: 80%;
+            max-height: 80%;
+            border: 2px solid #6a9aba;
             border-radius: 20px;
-            font-size: 11px;
-            z-index: 10;
-            pointer-events: none;
+            box-shadow: 0 0 30px rgba(0,0,0,0.8);
+            cursor: pointer;
+        }
+        .close-hint {
+            position: absolute;
+            bottom: 20px;
+            left: 0;
+            width: 100%;
+            text-align: center;
+            color: #aaccee;
+            font-size: 12px;
         }
     </style>
 </head>
 <body>
-    <div class="info">🖱️ тяни мышкой / пальцем, чтобы осмотреться</div>
-    <div class="status" id="status">⚡ панорама загружается...</div>
-
     
+    <div id="instructionZone" class="hotspot" style="top: 30%; left: 15%; width: 160px; height: 60px;">
+        📜 ИНСТРУКЦИЯ
+    </div>
+    <div id="deviceZone" class="hotspot" style="top: 60%; left: 70%; width: 180px; height: 60px;">
+        📡 АППАРАТ
+    </div>
+
+    <!-- Попап для инструкции -->
+    <div id="instructionPopup" class="instruction-popup">
+        <img id="instructionImage" src="instruction_from_siluet.jpg" alt="Инструкция">
+        <div class="close-hint">⚡ нажми на картинку, чтобы закрыть</div>
+    </div>
+
+    <!-- Подключаем Three.js из CDN -->
     <script type="importmap">
         {
             "imports": {
@@ -57,7 +91,9 @@
     <script type="module">
         import * as THREE from 'three';
 
-        const panoramaImage = 'images/panorama.jpg';
+        
+        const panoramaImage = "images/panorama.jpg";
+        
         
         const scene = new THREE.Scene();
         const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
@@ -65,13 +101,9 @@
         renderer.setSize(window.innerWidth, window.innerHeight);
         document.body.appendChild(renderer.domElement);
         
-        // Загружаем панораму
-        const texture = new THREE.TextureLoader().load(panoramaImage, 
-            () => { document.getElementById('status').innerHTML = '⚡ панорама готова • ищи зоны'; },
-            undefined,
-            (err) => { console.error('Ошибка загрузки панорамы:', err); document.getElementById('status').innerHTML = '❌ не удалось загрузить панораму'; }
-        );
+        
         const geometry = new THREE.SphereGeometry(500, 64, 64);
+        const texture = new THREE.TextureLoader().load(panoramaImage);
         const material = new THREE.MeshBasicMaterial({ map: texture, side: THREE.BackSide });
         const sphere = new THREE.Mesh(geometry, material);
         scene.add(sphere);
@@ -84,9 +116,7 @@
         renderer.domElement.addEventListener('mousedown', (e) => {
             isDragging = true;
             lastX = e.clientX;
-            renderer.domElement.style.cursor = 'grabbing';
         });
-        
         window.addEventListener('mousemove', (e) => {
             if (!isDragging) return;
             const delta = e.clientX - lastX;
@@ -94,11 +124,7 @@
             sphere.rotation.y = rotationY;
             lastX = e.clientX;
         });
-        
-        window.addEventListener('mouseup', () => {
-            isDragging = false;
-            renderer.domElement.style.cursor = 'grab';
-        });
+        window.addEventListener('mouseup', () => { isDragging = false; });
         
         
         renderer.domElement.addEventListener('touchstart', (e) => {
@@ -106,78 +132,60 @@
             lastX = e.touches[0].clientX;
             e.preventDefault();
         });
-        
         window.addEventListener('touchmove', (e) => {
             if (!isDragging) return;
             const delta = e.touches[0].clientX - lastX;
             rotationY += delta * 0.005;
             sphere.rotation.y = rotationY;
             lastX = e.touches[0].clientX;
-            e.preventDefault();
         });
+        window.addEventListener('touchend', () => { isDragging = false; });
         
-        window.addEventListener('touchend', () => {
-            isDragging = false;
-        });
         
-        // Анимация
         function animate() {
             requestAnimationFrame(animate);
             renderer.render(scene, camera);
         }
         animate();
         
+        
+        const instructionZone = document.getElementById('instructionZone');
+        const deviceZone = document.getElementById('deviceZone');
+        const popup = document.getElementById('instructionPopup');
+        const instructionImg = document.getElementById('instructionImage');
+        
+        // Открыть инструкцию
+        instructionZone.addEventListener('click', () => {
+            popup.style.display = 'flex';
+        });
+        
+        
+        deviceZone.addEventListener('click', () => {
+            window.location.href = "cosmicresonance.html";
+        });
+        
+       
+        popup.addEventListener('click', () => {
+            popup.style.display = 'none';
+        });
+        
 
-        const btnStyle = {
-            position: 'fixed',
-            padding: '12px 24px',
-            background: 'rgba(26, 42, 58, 0.85)',
-            border: '2px solid #6a9aba',
-            color: '#e0f0ff',
-            fontFamily: 'Courier New, monospace',
-            fontSize: '16px',
-            cursor: 'pointer',
-            borderRadius: '40px',
-            backdropFilter: 'blur(4px)',
-            transition: '0.2s',
-            zIndex: 20,
-            textShadow: '0 0 3px #2a6a8a'
-        };
+        console.log("🔭 Панорама загружена. Наведи на синие зоны и нажми.");
         
         
-        const btnInstruction = document.createElement('button');
-        btnInstruction.textContent = 'ЗАПИСКА';
-        Object.assign(btnInstruction.style, btnStyle);
-        btnInstruction.style.left = '20px';
-        btnInstruction.style.bottom = '80px';
-        btnInstruction.onmouseover = () => btnInstruction.style.background = 'rgba(46, 74, 106, 0.9)';
-        btnInstruction.onmouseout = () => btnInstruction.style.background = 'rgba(26, 42, 58, 0.85)';
-        btnInstruction.onclick = () => {
-            alert("📜 ЗАПИСКА ОТ СИЛУЭТА:\n\n«Этот аппарат — «Cosmic Resonance». Он отправляет сигнал в открытый космос. Сообщение достигнет цели через неделю... Или никогда.\n\nТестовая передача не тратит сеанс. Используй её, чтобы убедиться, что связь есть.\n\nКогда будешь готов — напиши. Не важно, что. Важно, что ты здесь.»");
-        };
-        document.body.appendChild(btnInstruction);
-        
-        
-        const btnDevice = document.createElement('button');
-        btnDevice.textContent = ' АППАРАТ COSMIC RESONANCE';
-        Object.assign(btnDevice.style, btnStyle);
-        btnDevice.style.right = '20px';
-        btnDevice.style.bottom = '80px';
-        btnDevice.onmouseover = () => btnDevice.style.background = 'rgba(46, 74, 106, 0.9)';
-        btnDevice.onmouseout = () => btnDevice.style.background = 'rgba(26, 42, 58, 0.85)';
-        btnDevice.onclick = () => {
-            window.location.href = 'cosmicresonance.html';
-        };
-        document.body.appendChild(btnDevice);
-        
-        
-        renderer.domElement.style.cursor = 'grab';
-        
-        
-        setTimeout(() => {
-            const statusDiv = document.getElementById('status');
-            if (statusDiv) statusDiv.innerHTML = '🔘 нажми на кнопку с инструкцией или аппаратом';
-        }, 1000);
+        const hint = document.createElement('div');
+        hint.innerText = "🔍 наведи на синие области";
+        hint.style.position = "absolute";
+        hint.style.bottom = "15px";
+        hint.style.left = "15px";
+        hint.style.color = "#aaccee";
+        hint.style.backgroundColor = "rgba(0,0,0,0.5)";
+        hint.style.padding = "5px 12px";
+        hint.style.borderRadius = "20px";
+        hint.style.fontSize = "12px";
+        hint.style.fontFamily = "monospace";
+        hint.style.zIndex = "20";
+        document.body.appendChild(hint);
     </script>
 </body>
 </html>
