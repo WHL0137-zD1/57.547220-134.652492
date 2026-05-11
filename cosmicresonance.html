@@ -21,17 +21,35 @@
             padding: 20px;
         }
 
-        .device-case {
+
+        .device-wrapper {
             position: relative;
             width: 100%;
             max-width: 1536px;
             margin: 0 auto;
+        }
+
+
+        .bg-stars {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: 0;
+            border-radius: 20px;
+        }
+
+        .device-case {
+            position: relative;
+            width: 100%;
             background-image: url('images/device_base.png');
             background-size: contain;
             background-repeat: no-repeat;
             background-position: center;
+            z-index: 1;
         }
-
 
         .screen {
             position: absolute;
@@ -40,29 +58,17 @@
             width: 948px;
             height: 1166px;
             overflow: hidden;
-            background: rgba(5, 10, 20, 0.3);
+            background: rgba(5, 10, 20, 0.25);
             border-radius: 20px;
-            backdrop-filter: blur(1px);
+            backdrop-filter: blur(2px);
             box-shadow: inset 0 0 20px rgba(0, 20, 40, 0.6), 0 0 15px rgba(0, 50, 80, 0.3);
             z-index: 2;
         }
 
-
-        .animated-bg {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            z-index: 0;
-            opacity: 0.6;
-            pointer-events: none;
-        }
-
+        
         .content {
             position: relative;
-            z-index: 2;
+            z-index: 3;
             padding: 20px;
             height: 100%;
             overflow-y: auto;
@@ -88,7 +94,7 @@
             align-items: center;
             margin: 10px 0 15px;
             padding: 10px 15px;
-            background: rgba(15, 24, 32, 0.7);
+            background: rgba(15, 24, 32, 0.6);
             border-radius: 40px;
             border: 1px solid #3a6a8a;
         }
@@ -114,7 +120,7 @@
 
         textarea, input {
             width: 100%;
-            background: rgba(15, 24, 32, 0.8);
+            background: rgba(15, 24, 32, 0.7);
             border: 1px solid #3a6a8a;
             color: #e0f0ff;
             font-family: 'Courier New', monospace;
@@ -158,7 +164,7 @@
         .response-area {
             margin-top: 12px;
             padding: 12px;
-            background: rgba(15, 26, 34, 0.8);
+            background: rgba(15, 26, 34, 0.7);
             border-radius: 16px;
             border-left: 4px solid #6a9aba;
             font-size: 13px;
@@ -189,37 +195,40 @@
     </style>
 </head>
 <body>
-<div class="device-case">
-    <div class="screen">
-        <img class="animated-bg" src="images/skystars.gif" alt="звёздный фон" loop autoplay muted>
+<div class="device-wrapper">
 
-        <div class="content">
-            <h1>🌀 COSMIC RESONANCE</h1>
-            <div class="status-panel">
-                <div class="indicator">
-                    <div class="light" id="statusLight"></div>
-                    <span class="status-text" id="statusText">ПРОВЕРКА СВЯЗИ...</span>
+    <img class="bg-stars" src="images/skystars.gif" alt="звёздное небо" loop autoplay muted>
+
+    <div class="device-case">
+        <div class="screen">
+            <div class="content">
+                <h1>🌀 COSMIC RESONANCE</h1>
+                <div class="status-panel">
+                    <div class="indicator">
+                        <div class="light" id="statusLight"></div>
+                        <span class="status-text" id="statusText">ПРОВЕРКА СВЯЗИ...</span>
+                    </div>
+                    <div class="small-note">канал: дальний космос</div>
                 </div>
-                <div class="small-note">канал: дальний космос</div>
+
+                <p style="margin: 5px 0; font-size: 13px;">Напиши сообщение для своего сигнала.</p>
+                <textarea id="cosmicMessage" rows="3" placeholder="Твоё сообщение..."></textarea>
+                <div class="button-group">
+                    <button id="testBtn">📡 ТЕСТ СВЯЗИ</button>
+                    <button id="sendBtn">✨ ОТПРАВИТЬ</button>
+                </div>
+                <div id="sendResponse" class="response-area"></div>
+                <div id="cooldownMessage" class="cooldown-timer"></div>
+
+                <hr>
+
+                <h2>📡 ПРОВЕРИТЬ ОТВЕТ</h2>
+                <input type="text" id="checkCode" placeholder="ЗВЁЗДНЫЙ НОМЕР (например, HD 73124-0426)">
+                <button id="checkBtn">🔍 НАЙТИ ОТВЕТ</button>
+                <div id="checkResponse" class="response-area"></div>
+
+                <div class="footer"> сигнал уходит со скоростью света, но ответ может прийти не сразу... или никогда. космос безграничен</div>
             </div>
-
-            <p style="margin: 5px 0; font-size: 13px;">Напиши сообщение для своего сигнала.</p>
-            <textarea id="cosmicMessage" rows="3" placeholder="Твоё сообщение..."></textarea>
-            <div class="button-group">
-                <button id="testBtn">📡 ТЕСТ СВЯЗИ</button>
-                <button id="sendBtn"> ОТПРАВИТЬ</button>
-            </div>
-            <div id="sendResponse" class="response-area"></div>
-            <div id="cooldownMessage" class="cooldown-timer"></div>
-
-            <hr>
-
-            <h2>📡 ПРОВЕРИТЬ ОТВЕТ</h2>
-            <input type="text" id="checkCode" placeholder="ЗВЁЗДНЫЙ НОМЕР (например, HD 73124-0426)">
-            <button id="checkBtn">🔍 НАЙТИ ОТВЕТ</button>
-            <div id="checkResponse" class="response-area"></div>
-
-            <div class="footer">🌠 сигнал уходит со скоростью света, но ответ может прийти не сразу... или никогда. космос безграничен</div>
         </div>
     </div>
 </div>
@@ -300,9 +309,9 @@
     }
 
     function animateSend() {
-        const box = document.querySelector('.device-case');
-        if (box) box.classList.add('sending');
-        setTimeout(() => { if (box) box.classList.remove('sending'); }, 400);
+        const wrapper = document.querySelector('.device-wrapper');
+        if (wrapper) wrapper.classList.add('sending');
+        setTimeout(() => { if (wrapper) wrapper.classList.remove('sending'); }, 400);
     }
 
     testBtn.addEventListener('click', async () => {
@@ -328,7 +337,7 @@
         }
         const message = messageField.value.trim();
         if (!message) {
-            showResponse(sendResponseDiv, "❄️ Поле пусто. Напиши что-нибудь...", true);
+            showResponse(sendResponseDiv, " Поле пусто. Напиши что-нибудь...", true);
             return;
         }
         sendBtn.disabled = true;
@@ -340,7 +349,7 @@
             });
             const result = await response.json();
             if (result.success) {
-                showResponse(sendResponseDiv, `✨ СООБЩЕНИЕ ОТПРАВЛЕНО В КОСМОС ✨<br><br>Твой звёздный номер: <strong>${result.code}</strong><br><br>Сохрани его. Может, кто-то услышит.`);
+                showResponse(sendResponseDiv, ` СООБЩЕНИЕ ОТПРАВЛЕНО В КОСМОС <br><br>Твой звёздный номер: <strong>${result.code}</strong><br><br>Сохрани его. Может, кто-то услышит.`);
                 messageField.value = '';
                 markSend();
             } else {
