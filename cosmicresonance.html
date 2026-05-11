@@ -21,20 +21,26 @@
             padding: 16px;
         }
 
-
         .resonance-container {
             position: relative;
             width: 100%;
-            max-width: 500px;
+            max-width: 550px;
             margin: 0 auto;
+            background: #0f1820;
+            border-radius: 32px;
+            border: 2px solid #3a6a8a;
+            box-shadow: 0 0 20px rgba(0, 50, 80, 0.4);
+            overflow: hidden;
         }
 
         .device-case {
             position: relative;
             width: 100%;
-            background-size: contain;
+            background-size: cover;
             background-repeat: no-repeat;
             background-position: center;
+            min-height: 550px;
+            background-color: #0f1820;
         }
 
         .screen {
@@ -42,21 +48,20 @@
             top: 6%;
             left: 22%;
             width: 62%;
-            height: 57%; 
-            overflow-y: auto;
-            background: rgba(5, 10, 20, 0.4);
-            border-radius: 16px;
-            backdrop-filter: blur(3px);
-            box-shadow: inset 0 0 15px rgba(0, 20, 40, 0.5), 0 0 10px rgba(0, 50, 80, 0.3);
+            height: 57%;
+            background: rgba(5, 10, 20, 0.55);
+            backdrop-filter: blur(4px);
+            border-radius: 20px;
             padding: 12px;
+            overflow-y: auto;
+            box-shadow: inset 0 0 15px rgba(0, 20, 40, 0.5), 0 0 10px rgba(0, 50, 80, 0.3);
             color: #e0f0ff;
         }
-
 
         .content {
             height: 100%;
             overflow-y: auto;
-            font-size: 12px;
+            font-size: 11px;
         }
 
         h1, h2 {
@@ -65,19 +70,19 @@
             font-weight: normal;
             letter-spacing: 2px;
             border-bottom: 1px dashed #4a7a9a;
-            padding-bottom: 6px;
-            margin: 8px 0;
+            padding-bottom: 5px;
+            margin: 6px 0;
         }
         h1 { font-size: 18px; }
-        h2 { font-size: 14px; }
+        h2 { font-size: 14px; margin-top: 12px; }
 
         .status-panel {
             display: flex;
             justify-content: space-between;
             align-items: center;
             margin: 8px 0;
-            padding: 6px 10px;
-            background: rgba(15, 24, 32, 0.6);
+            padding: 5px 8px;
+            background: rgba(15, 24, 32, 0.7);
             border-radius: 30px;
             border: 1px solid #3a6a8a;
             font-size: 10px;
@@ -86,93 +91,90 @@
         .indicator {
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 6px;
         }
 
         .light {
-            width: 10px;
-            height: 10px;
+            width: 8px;
+            height: 8px;
             border-radius: 50%;
             background-color: #2a4a6a;
         }
-        .light.green { background-color: #6f6; box-shadow: 0 0 5px #6f6; }
-        .light.red { background-color: #f66; box-shadow: 0 0 5px #f66; }
+        .light.green { background-color: #6f6; box-shadow: 0 0 4px #6f6; }
+        .light.red { background-color: #f66; box-shadow: 0 0 4px #f66; }
 
         textarea, input {
             width: 100%;
             background: rgba(15, 24, 32, 0.8);
             border: 1px solid #3a6a8a;
             color: #e0f0ff;
-            font-family: 'Courier New', monospace;
-            font-size: 12px;
-            padding: 8px;
-            margin: 6px 0;
+            font-family: monospace;
+            font-size: 11px;
+            padding: 6px;
+            margin: 5px 0;
             border-radius: 12px;
         }
-        textarea { resize: vertical; }
 
         .button-group {
             display: flex;
-            gap: 10px;
-            flex-wrap: wrap;
+            gap: 8px;
             justify-content: center;
-            margin: 10px 0;
+            margin: 8px 0;
         }
         button {
             background: #1e2f3f;
             border: 1px solid #5a8aba;
             color: #e0f0ff;
-            font-family: monospace;
-            font-size: 12px;
-            padding: 6px 14px;
+            font-size: 11px;
+            padding: 5px 12px;
             cursor: pointer;
             border-radius: 30px;
         }
         button:hover:not(:disabled) {
             background: #2e4a6a;
-            text-shadow: 0 0 3px #aaccee;
         }
-        button:disabled { opacity: 0.4; cursor: not-allowed; }
+        button:disabled { opacity: 0.4; }
 
         .response-area {
-            margin-top: 8px;
+            margin: 8px 0;
             padding: 8px;
             background: rgba(15, 26, 34, 0.7);
             border-radius: 12px;
             border-left: 3px solid #6a9aba;
-            font-size: 11px;
+            font-size: 10px;
             word-break: break-word;
         }
 
-        .cooldown-timer, .copy-btn {
-            font-size: 10px;
+        .cooldown-timer {
+            font-size: 9px;
             text-align: center;
-            margin-top: 6px;
+            margin: 5px 0;
         }
 
         .copy-btn {
             background: #1a2a3a;
             border: 1px solid #5a8aba;
             color: #aaccee;
-            padding: 4px 10px;
+            padding: 3px 8px;
             border-radius: 20px;
             cursor: pointer;
             display: inline-block;
+            font-size: 10px;
         }
+
+        hr { border-color: #3a6a8a; margin: 8px 0; }
+        .footer { text-align: center; margin-top: 10px; font-size: 8px; color: #8aaccc; }
 
         @keyframes sendPulse {
             0% { text-shadow: 0 0 0 #8db5e5; }
             100% { text-shadow: 0 0 6px #8db5e5; }
         }
         .sending { animation: sendPulse 0.3s ease-out; }
-
-        hr { border-color: #3a6a8a; margin: 12px 0; }
-        .footer { text-align: center; margin-top: 12px; font-size: 9px; color: #8aaccc; }
     </style>
 </head>
 <body>
-<div class="resonance-container" id="resonanceContainer">
-    <div class="device-case" id="deviceCase" style="background-image: url('images/device_base.png');">
+<div class="resonance-container">
+    <div class="device-case" id="deviceCase">
         <div class="screen">
             <div class="content">
                 <h1>🌀 COSMIC RESONANCE</h1>
@@ -184,10 +186,10 @@
                     <div>канал: дальний космос</div>
                 </div>
 
-                <p>Напиши сообщение для своего сигнала.</p>
+                <p>Напиши сообщение:</p>
                 <textarea id="cosmicMessage" rows="2" placeholder="Твоё сообщение..."></textarea>
                 <div class="button-group">
-                    <button id="testBtn">📡 ТЕСТ СВЯЗИ</button>
+                    <button id="testBtn">📡 ТЕСТ</button>
                     <button id="sendBtn">✨ ОТПРАВИТЬ</button>
                 </div>
                 <div id="sendResponse" class="response-area"></div>
@@ -197,10 +199,10 @@
 
                 <h2>📡 ПРОВЕРИТЬ ОТВЕТ</h2>
                 <input type="text" id="checkCode" placeholder="ЗВЁЗДНЫЙ НОМЕР">
-                <button id="checkBtn">🔍 НАЙТИ ОТВЕТ</button>
+                <button id="checkBtn">🔍 НАЙТИ</button>
                 <div id="checkResponse" class="response-area"></div>
 
-                <div class="footer"> сигнал уходит со скоростью света, но ответ может прийти не сразу... или никогда.</div>
+                <div class="footer">🌠 сигнал уходит в космос. ответ может не прийти.</div>
             </div>
         </div>
     </div>
@@ -208,20 +210,30 @@
 
 <script>
 
-    const deviceImagePath = 'images/device_base.png';
-    const deviceCaseDiv = document.getElementById('deviceCase');
+    const CORPUS_IMAGE_PATH = 'images/device_base.png';
 
-    const testImg = new Image();
-    testImg.onload = () => { console.log('✅ Корпус загружен:', deviceImagePath); };
-    testImg.onerror = () => {
-        console.warn('❌ Корпус НЕ загружен по пути:', deviceImagePath);
-        deviceCaseDiv.style.backgroundColor = '#1a2a3a';
-        deviceCaseDiv.style.border = '2px solid #5a8aba';
-        deviceCaseDiv.style.borderRadius = '24px';
-        deviceCaseDiv.style.minHeight = '400px';
+    
+    const deviceCase = document.getElementById('deviceCase');
+    
+
+    const imgTest = new Image();
+    imgTest.onload = function() {
+        deviceCase.style.backgroundImage = `url('${CORPUS_IMAGE_PATH}')`;
+        deviceCase.style.backgroundSize = 'contain';
+        deviceCase.style.minHeight = 'auto';
+        deviceCase.style.aspectRatio = '1536 / 2048';
+        console.log('✅ Корпус загружен');
     };
-    testImg.src = deviceImagePath;
-    deviceCaseDiv.style.backgroundImage = `url('${deviceImagePath}')`;
+    imgTest.onerror = function() {
+        console.warn('❌ Картинка корпуса не найдена по пути:', CORPUS_IMAGE_PATH);
+        deviceCase.style.backgroundColor = '#1a2a3a';
+        deviceCase.style.border = '2px solid #5a8aba';
+        deviceCase.style.borderRadius = '24px';
+        deviceCase.style.minHeight = '500px';
+        deviceCase.style.backgroundImage = 'none';
+    };
+    imgTest.src = CORPUS_IMAGE_PATH;
+
 
     const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwlZA55V1R-N17owF_slHhZjylw-Jlcpi1_NTbXAhdtiMczSmM1GCo70oH4VNU90suO/exec';
 
@@ -295,7 +307,7 @@
     }
 
     function animateSend() {
-        const container = document.getElementById('resonanceContainer');
+        const container = document.querySelector('.resonance-container');
         container.classList.add('sending');
         setTimeout(() => container.classList.remove('sending'), 300);
     }
@@ -305,7 +317,7 @@
         showResponse(sendResponseDiv, "📡 Тестовый сигнал...");
         try {
             const response = await fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify({ message: '[PING]', test: true }) });
-            if (response.ok) showResponse(sendResponseDiv, "✅ Тест пройден. Канал открыт.");
+            if (response.ok) showResponse(sendResponseDiv, "✅ Тест пройден.");
             else showResponse(sendResponseDiv, "❌ Тест не удался.", true);
         } catch (error) {
             showResponse(sendResponseDiv, "❌ Ошибка теста.", true);
@@ -315,7 +327,7 @@
 
     sendBtn.addEventListener('click', async () => {
         if (getRemainingCooldown() > 0) {
-            showResponse(sendResponseDiv, "⏳ Передатчик заряжается. Вернись позже.", true);
+            showResponse(sendResponseDiv, "Передатчик заряжается. Вернись позже.", true);
             return;
         }
         const message = messageField.value.trim();
@@ -329,7 +341,7 @@
             const response = await fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify({ message: message }) });
             const result = await response.json();
             if (result.success) {
-                const successMsg = `СООБЩЕНИЕ ОТПРАВЛЕНО<br><br>⭐ Твой звёздный номер: <strong>${result.code}</strong><br><br><span class="copy-btn" onclick="navigator.clipboard.writeText('${result.code}')">📋 скопировать</span><br><br>Сохрани его. Может, кто-то услышит.`;
+                const successMsg = `ОТПРАВЛЕНО<br><br>⭐ Твой звёздный номер: <strong>${result.code}</strong><br><br><span class="copy-btn" onclick="navigator.clipboard.writeText('${result.code}')">📋 копировать</span><br><br>Сохрани его. Может, кто-то услышит.`;
                 showResponse(sendResponseDiv, successMsg, false, true);
                 messageField.value = '';
                 markSend();
@@ -347,11 +359,11 @@
     checkBtn.addEventListener('click', async () => {
         const code = checkCodeInput.value.trim();
         if (!code) {
-            showResponse(checkResponseDiv, "❄️ Введи звёздный номер.", true);
+            showResponse(checkResponseDiv, "Введи номер.", true);
             return;
         }
         checkBtn.disabled = true;
-        showResponse(checkResponseDiv, "🔍 Поиск ответа...");
+        showResponse(checkResponseDiv, "🔍 Поиск...");
         try {
             const response = await fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify({ checkCode: code }) });
             const result = await response.json();
@@ -360,10 +372,10 @@
             } else if (result.error) {
                 showResponse(checkResponseDiv, "❌ Ошибка проверки.", true);
             } else {
-                showResponse(checkResponseDiv, " Ответа пока нет. Сигнал ещё в пути. Загляни позже.");
+                showResponse(checkResponseDiv, "⏳ Ответа пока нет. Загляни позже.");
             }
         } catch (error) {
-            showResponse(checkResponseDiv, "❌ Ошибка соединения.", true);
+            showResponse(checkResponseDiv, "❌ Ошибка.", true);
         }
         checkBtn.disabled = false;
     });
