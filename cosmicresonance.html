@@ -18,61 +18,45 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            padding: 20px;
+            padding: 16px;
         }
 
 
-        .device-wrapper {
+        .resonance-container {
             position: relative;
             width: 100%;
-            max-width: 1536px;
+            max-width: 500px;
             margin: 0 auto;
-        }
-
-
-        .bg-stars {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            z-index: 0;
-            border-radius: 20px;
         }
 
         .device-case {
             position: relative;
             width: 100%;
-            background-image: url('images/device_base.png');
             background-size: contain;
             background-repeat: no-repeat;
             background-position: center;
-            z-index: 1;
         }
 
         .screen {
             position: absolute;
-            top: 116px;
-            left: 340px;
-            width: 948px;
-            height: 1166px;
-            overflow: hidden;
-            background: rgba(5, 10, 20, 0.25);
-            border-radius: 20px;
-            backdrop-filter: blur(2px);
-            box-shadow: inset 0 0 20px rgba(0, 20, 40, 0.6), 0 0 15px rgba(0, 50, 80, 0.3);
-            z-index: 2;
+            top: 6%;
+            left: 22%;
+            width: 62%;
+            height: 57%; 
+            overflow-y: auto;
+            background: rgba(5, 10, 20, 0.4);
+            border-radius: 16px;
+            backdrop-filter: blur(3px);
+            box-shadow: inset 0 0 15px rgba(0, 20, 40, 0.5), 0 0 10px rgba(0, 50, 80, 0.3);
+            padding: 12px;
+            color: #e0f0ff;
         }
 
-        
+
         .content {
-            position: relative;
-            z-index: 3;
-            padding: 20px;
             height: 100%;
             overflow-y: auto;
-            color: #e0f0ff;
+            font-size: 12px;
         }
 
         h1, h2 {
@@ -81,138 +65,127 @@
             font-weight: normal;
             letter-spacing: 2px;
             border-bottom: 1px dashed #4a7a9a;
-            width: 100%;
-            padding-bottom: 8px;
-            margin-top: 0;
+            padding-bottom: 6px;
+            margin: 8px 0;
         }
-        h1 { font-size: 22px; margin-bottom: 15px; }
-        h2 { font-size: 16px; margin-top: 20px; margin-bottom: 10px; }
+        h1 { font-size: 18px; }
+        h2 { font-size: 14px; }
 
         .status-panel {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin: 10px 0 15px;
-            padding: 10px 15px;
+            margin: 8px 0;
+            padding: 6px 10px;
             background: rgba(15, 24, 32, 0.6);
-            border-radius: 40px;
+            border-radius: 30px;
             border: 1px solid #3a6a8a;
+            font-size: 10px;
         }
 
         .indicator {
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 8px;
         }
 
         .light {
-            width: 12px;
-            height: 12px;
+            width: 10px;
+            height: 10px;
             border-radius: 50%;
             background-color: #2a4a6a;
-            transition: 0.1s;
         }
-        .light.green { background-color: #6f6; box-shadow: 0 0 6px #6f6; }
-        .light.red { background-color: #f66; box-shadow: 0 0 6px #f66; }
-
-        .status-text { font-size: 12px; letter-spacing: 1px; color: #cceeff; }
-        .small-note { font-size: 10px; color: #8aaccc; }
+        .light.green { background-color: #6f6; box-shadow: 0 0 5px #6f6; }
+        .light.red { background-color: #f66; box-shadow: 0 0 5px #f66; }
 
         textarea, input {
             width: 100%;
-            background: rgba(15, 24, 32, 0.7);
+            background: rgba(15, 24, 32, 0.8);
             border: 1px solid #3a6a8a;
             color: #e0f0ff;
             font-family: 'Courier New', monospace;
-            font-size: 14px;
-            padding: 10px;
-            margin: 8px 0;
-            border-radius: 16px;
+            font-size: 12px;
+            padding: 8px;
+            margin: 6px 0;
+            border-radius: 12px;
         }
         textarea { resize: vertical; }
-        input:focus, textarea:focus {
-            outline: none;
-            border-color: #8db5e5;
-            box-shadow: 0 0 5px #5a9aba;
-        }
 
         .button-group {
             display: flex;
-            gap: 12px;
+            gap: 10px;
             flex-wrap: wrap;
             justify-content: center;
-            margin: 12px 0;
+            margin: 10px 0;
         }
         button {
             background: #1e2f3f;
             border: 1px solid #5a8aba;
             color: #e0f0ff;
             font-family: monospace;
-            font-size: 14px;
-            padding: 8px 16px;
+            font-size: 12px;
+            padding: 6px 14px;
             cursor: pointer;
-            transition: 0.2s;
-            border-radius: 40px;
+            border-radius: 30px;
         }
         button:hover:not(:disabled) {
             background: #2e4a6a;
-            border-color: #8db5e5;
-            text-shadow: 0 0 4px #aaccee;
+            text-shadow: 0 0 3px #aaccee;
         }
-        button:disabled { opacity: 0.5; cursor: not-allowed; }
+        button:disabled { opacity: 0.4; cursor: not-allowed; }
 
         .response-area {
-            margin-top: 12px;
-            padding: 12px;
+            margin-top: 8px;
+            padding: 8px;
             background: rgba(15, 26, 34, 0.7);
-            border-radius: 16px;
-            border-left: 4px solid #6a9aba;
-            font-size: 13px;
-            white-space: pre-wrap;
+            border-radius: 12px;
+            border-left: 3px solid #6a9aba;
+            font-size: 11px;
             word-break: break-word;
-            color: #d0eaff;
         }
-        .footer {
-            text-align: center;
-            margin-top: 20px;
+
+        .cooldown-timer, .copy-btn {
             font-size: 10px;
-            color: #8aaccc;
+            text-align: center;
+            margin-top: 6px;
         }
-        hr { border-color: #3a6a8a; margin: 15px 0; }
+
+        .copy-btn {
+            background: #1a2a3a;
+            border: 1px solid #5a8aba;
+            color: #aaccee;
+            padding: 4px 10px;
+            border-radius: 20px;
+            cursor: pointer;
+            display: inline-block;
+        }
 
         @keyframes sendPulse {
-            0% { text-shadow: 0 0 0 #8db5e5; box-shadow: 0 0 0 0 rgba(100, 200, 255, 0.4); }
-            100% { text-shadow: 0 0 6px #8db5e5; box-shadow: 0 0 0 15px rgba(100, 200, 255, 0); }
+            0% { text-shadow: 0 0 0 #8db5e5; }
+            100% { text-shadow: 0 0 6px #8db5e5; }
         }
-        .sending { animation: sendPulse 0.4s ease-out; }
+        .sending { animation: sendPulse 0.3s ease-out; }
 
-        .cooldown-timer {
-            font-size: 11px;
-            color: #8aaccc;
-            text-align: center;
-            margin-top: 8px;
-        }
+        hr { border-color: #3a6a8a; margin: 12px 0; }
+        .footer { text-align: center; margin-top: 12px; font-size: 9px; color: #8aaccc; }
     </style>
 </head>
 <body>
-<div class="device-wrapper">
-
-    <img class="bg-stars" src="images/skystars.gif" alt="звёздное небо" loop autoplay muted>
-
-    <div class="device-case">
+<div class="resonance-container" id="resonanceContainer">
+    <div class="device-case" id="deviceCase" style="background-image: url('images/device_base.png');">
         <div class="screen">
             <div class="content">
                 <h1>🌀 COSMIC RESONANCE</h1>
                 <div class="status-panel">
                     <div class="indicator">
                         <div class="light" id="statusLight"></div>
-                        <span class="status-text" id="statusText">ПРОВЕРКА СВЯЗИ...</span>
+                        <span id="statusText">ПРОВЕРКА СВЯЗИ...</span>
                     </div>
-                    <div class="small-note">канал: дальний космос</div>
+                    <div>канал: дальний космос</div>
                 </div>
 
-                <p style="margin: 5px 0; font-size: 13px;">Напиши сообщение для своего сигнала.</p>
-                <textarea id="cosmicMessage" rows="3" placeholder="Твоё сообщение..."></textarea>
+                <p>Напиши сообщение для своего сигнала.</p>
+                <textarea id="cosmicMessage" rows="2" placeholder="Твоё сообщение..."></textarea>
                 <div class="button-group">
                     <button id="testBtn">📡 ТЕСТ СВЯЗИ</button>
                     <button id="sendBtn">✨ ОТПРАВИТЬ</button>
@@ -223,17 +196,33 @@
                 <hr>
 
                 <h2>📡 ПРОВЕРИТЬ ОТВЕТ</h2>
-                <input type="text" id="checkCode" placeholder="ЗВЁЗДНЫЙ НОМЕР (например, HD 73124-0426)">
+                <input type="text" id="checkCode" placeholder="ЗВЁЗДНЫЙ НОМЕР">
                 <button id="checkBtn">🔍 НАЙТИ ОТВЕТ</button>
                 <div id="checkResponse" class="response-area"></div>
 
-                <div class="footer"> сигнал уходит со скоростью света, но ответ может прийти не сразу... или никогда. космос безграничен</div>
+                <div class="footer"> сигнал уходит со скоростью света, но ответ может прийти не сразу... или никогда.</div>
             </div>
         </div>
     </div>
 </div>
 
 <script>
+
+    const deviceImagePath = 'images/device_base.png';
+    const deviceCaseDiv = document.getElementById('deviceCase');
+
+    const testImg = new Image();
+    testImg.onload = () => { console.log('✅ Корпус загружен:', deviceImagePath); };
+    testImg.onerror = () => {
+        console.warn('❌ Корпус НЕ загружен по пути:', deviceImagePath);
+        deviceCaseDiv.style.backgroundColor = '#1a2a3a';
+        deviceCaseDiv.style.border = '2px solid #5a8aba';
+        deviceCaseDiv.style.borderRadius = '24px';
+        deviceCaseDiv.style.minHeight = '400px';
+    };
+    testImg.src = deviceImagePath;
+    deviceCaseDiv.style.backgroundImage = `url('${deviceImagePath}')`;
+
     const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwlZA55V1R-N17owF_slHhZjylw-Jlcpi1_NTbXAhdtiMczSmM1GCo70oH4VNU90suO/exec';
 
     const messageField = document.getElementById('cosmicMessage');
@@ -243,7 +232,6 @@
     const statusLight = document.getElementById('statusLight');
     const statusText = document.getElementById('statusText');
     const cooldownDiv = document.getElementById('cooldownMessage');
-
     const checkCodeInput = document.getElementById('checkCode');
     const checkBtn = document.getElementById('checkBtn');
     const checkResponseDiv = document.getElementById('checkResponse');
@@ -265,7 +253,7 @@
             const hours = Math.floor(remaining / (60 * 60 * 1000));
             const minutes = Math.floor((remaining % (60 * 60 * 1000)) / (60 * 1000));
             sendBtn.disabled = true;
-            cooldownDiv.innerHTML = `⏳ передатчик заряжается: ${hours}ч ${minutes}мин до нового сигнала`;
+            cooldownDiv.innerHTML = `⏳ передатчик заряжается: ${hours}ч ${minutes}мин`;
         } else {
             sendBtn.disabled = false;
             cooldownDiv.innerHTML = '';
@@ -279,19 +267,14 @@
 
     async function updateConnectionStatus() {
         try {
-            const response = await fetch(SCRIPT_URL, {
-                method: 'POST',
-                body: JSON.stringify({ ping: true })
-            });
+            const response = await fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify({ ping: true }) });
             if (response.ok) {
                 statusLight.className = 'light green';
                 statusText.innerHTML = 'СВЯЗЬ: АКТИВНА';
-                statusText.style.color = '#ccffcc';
             } else throw new Error();
         } catch (e) {
             statusLight.className = 'light red';
             statusText.innerHTML = 'СВЯЗЬ: ПОТЕРЯНА';
-            statusText.style.color = '#ffcccc';
         }
     }
 
@@ -299,29 +282,29 @@
     setInterval(updateConnectionStatus, 20000);
     updateCooldownUI();
 
-    function showResponse(div, text, isError = false) {
+    let responseTimeout = null;
+    function showResponse(div, text, isError = false, stayLong = false) {
+        if (responseTimeout) clearTimeout(responseTimeout);
         div.innerHTML = `<span style="${isError ? 'color:#ffaa88' : 'color:#e0ffc0'}">${text}</span>`;
-        setTimeout(() => {
+        const duration = stayLong ? 30000 : 8000;
+        responseTimeout = setTimeout(() => {
             if (div.innerHTML === `<span style="${isError ? 'color:#ffaa88' : 'color:#e0ffc0'}">${text}</span>`) {
                 div.innerHTML = '';
             }
-        }, 10000);
+        }, duration);
     }
 
     function animateSend() {
-        const wrapper = document.querySelector('.device-wrapper');
-        if (wrapper) wrapper.classList.add('sending');
-        setTimeout(() => { if (wrapper) wrapper.classList.remove('sending'); }, 400);
+        const container = document.getElementById('resonanceContainer');
+        container.classList.add('sending');
+        setTimeout(() => container.classList.remove('sending'), 300);
     }
 
     testBtn.addEventListener('click', async () => {
         testBtn.disabled = true;
         showResponse(sendResponseDiv, "📡 Тестовый сигнал...");
         try {
-            const response = await fetch(SCRIPT_URL, {
-                method: 'POST',
-                body: JSON.stringify({ message: '[PING]', test: true })
-            });
+            const response = await fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify({ message: '[PING]', test: true }) });
             if (response.ok) showResponse(sendResponseDiv, "✅ Тест пройден. Канал открыт.");
             else showResponse(sendResponseDiv, "❌ Тест не удался.", true);
         } catch (error) {
@@ -332,32 +315,30 @@
 
     sendBtn.addEventListener('click', async () => {
         if (getRemainingCooldown() > 0) {
-            showResponse(sendResponseDiv, "⏳ Передатчик ещё заряжается. Вернись позже.", true);
+            showResponse(sendResponseDiv, "⏳ Передатчик заряжается. Вернись позже.", true);
             return;
         }
         const message = messageField.value.trim();
         if (!message) {
-            showResponse(sendResponseDiv, " Поле пусто. Напиши что-нибудь...", true);
+            showResponse(sendResponseDiv, "Поле пусто.", true);
             return;
         }
         sendBtn.disabled = true;
         animateSend();
         try {
-            const response = await fetch(SCRIPT_URL, {
-                method: 'POST',
-                body: JSON.stringify({ message: message })
-            });
+            const response = await fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify({ message: message }) });
             const result = await response.json();
             if (result.success) {
-                showResponse(sendResponseDiv, ` СООБЩЕНИЕ ОТПРАВЛЕНО В КОСМОС <br><br>Твой звёздный номер: <strong>${result.code}</strong><br><br>Сохрани его. Может, кто-то услышит.`);
+                const successMsg = `СООБЩЕНИЕ ОТПРАВЛЕНО<br><br>⭐ Твой звёздный номер: <strong>${result.code}</strong><br><br><span class="copy-btn" onclick="navigator.clipboard.writeText('${result.code}')">📋 скопировать</span><br><br>Сохрани его. Может, кто-то услышит.`;
+                showResponse(sendResponseDiv, successMsg, false, true);
                 messageField.value = '';
                 markSend();
             } else {
-                showResponse(sendResponseDiv, "❌ Ошибка отправки. Попробуй ещё раз.", true);
+                showResponse(sendResponseDiv, "❌ Ошибка отправки.", true);
                 sendBtn.disabled = false;
             }
         } catch (error) {
-            showResponse(sendResponseDiv, "❌ Ошибка соединения. Сигнал не ушёл.", true);
+            showResponse(sendResponseDiv, "❌ Ошибка соединения.", true);
             sendBtn.disabled = false;
         }
         updateCooldownUI();
@@ -366,23 +347,20 @@
     checkBtn.addEventListener('click', async () => {
         const code = checkCodeInput.value.trim();
         if (!code) {
-            showResponse(checkResponseDiv, "Введи звёздный номер.", true);
+            showResponse(checkResponseDiv, "❄️ Введи звёздный номер.", true);
             return;
         }
         checkBtn.disabled = true;
         showResponse(checkResponseDiv, "🔍 Поиск ответа...");
         try {
-            const response = await fetch(SCRIPT_URL, {
-                method: 'POST',
-                body: JSON.stringify({ checkCode: code })
-            });
+            const response = await fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify({ checkCode: code }) });
             const result = await response.json();
             if (result.hasResponse) {
-                showResponse(checkResponseDiv, `📡 ПОЛУЧЕН РЕЗОНАНС ИЗ КОСМОСА:<br><br>${result.response}`);
+                showResponse(checkResponseDiv, `📡 ОТВЕТ ИЗ КОСМОСА:<br><br>${result.response}`, false, true);
             } else if (result.error) {
                 showResponse(checkResponseDiv, "❌ Ошибка проверки.", true);
             } else {
-                showResponse(checkResponseDiv, "⏳ Ответа пока нет. Сигнал ещё в пути. Загляни... когда-нибудь.");
+                showResponse(checkResponseDiv, " Ответа пока нет. Сигнал ещё в пути. Загляни позже.");
             }
         } catch (error) {
             showResponse(checkResponseDiv, "❌ Ошибка соединения.", true);
