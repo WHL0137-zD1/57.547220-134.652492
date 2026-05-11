@@ -4,37 +4,34 @@
     <meta charset="UTF-8">
     <title>Cosmic Resonance | отправка сигнала</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
 
-        body {
-            background: #0a0c12;
-            font-family: 'Courier New', monospace;
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 16px;
-        }
+    body {
+        background: #0a0c12;
+        font-family: 'Courier New', monospace;
+        min-height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 16px;
+    }
 
-        .resonance-container {
-            position: relative;
-            width: 100%;
-            max-width: 550px;
-            margin: 0 auto;
-        }
-    
+
     .resonance-container {
         position: relative;
         width: 100%;
         max-width: 550px;
         margin: 0 auto;
-        min-height: 400px;
+        background: #0a0c12;
+        border-radius: 32px;
+        overflow: hidden;
     }
+
 
     .stars-bg {
         position: absolute;
@@ -42,146 +39,153 @@
         left: 0;
         width: 100%;
         height: 100%;
-        object-fit: contain;
+        object-fit: cover;
         object-position: center;
-        border-radius: 32px;
         z-index: 0;
-        opacity: 0.7;
+        opacity: 0.8;
         pointer-events: none;
-        background: #0a0c12;
+    }
 
-        }
+    .device-case {
+        position: relative;
+        width: 100%;
+        background: transparent;
+        background-size: contain;
+        background-repeat: no-repeat;
+        background-position: center;
+        z-index: 1;
+    }
 
+    /* Экран — поверх корпуса */
+    .screen {
+        position: absolute;
+        top: 6%;
+        left: 22%;
+        width: 62%;
+        height: 57%;
+        background: rgba(5, 10, 20, 0.5);
+        backdrop-filter: blur(4px);
+        border-radius: 20px;
+        padding: 10px;
+        overflow-y: auto;
+        box-shadow: inset 0 0 15px rgba(0, 20, 40, 0.5), 0 0 10px rgba(0, 50, 80, 0.3);
+        color: #e0f0ff;
+        z-index: 2;
+    }
 
-        .screen {
-            position: absolute;
-            top: 6%;
-            left: 22%;
-            width: 62%;
-            height: 57%;
-            background: rgba(5, 10, 20, 0.5);
-            backdrop-filter: blur(4px);
-            border-radius: 20px;
-            padding: 10px;
-            overflow-y: auto;
-            box-shadow: inset 0 0 15px rgba(0, 20, 40, 0.5), 0 0 10px rgba(0, 50, 80, 0.3);
-            color: #e0f0ff;
-            z-index: 2;
-        }
+    .content {
+        height: 100%;
+        overflow-y: auto;
+        font-size: 11px;
+    }
 
-        .content {
-            height: 100%;
-            overflow-y: auto;
-            font-size: 11px;
-        }
+    h1, h2 {
+        color: #aaccee;
+        text-align: center;
+        font-weight: normal;
+        letter-spacing: 2px;
+        border-bottom: 1px dashed #4a7a9a;
+        padding-bottom: 5px;
+        margin: 6px 0;
+    }
+    h1 { font-size: 18px; }
+    h2 { font-size: 14px; margin-top: 12px; }
 
-        h1, h2 {
-            color: #aaccee;
-            text-align: center;
-            font-weight: normal;
-            letter-spacing: 2px;
-            border-bottom: 1px dashed #4a7a9a;
-            padding-bottom: 5px;
-            margin: 6px 0;
-        }
-        h1 { font-size: 18px; }
-        h2 { font-size: 14px; margin-top: 12px; }
+    .status-panel {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin: 8px 0;
+        padding: 5px 8px;
+        background: rgba(15, 24, 32, 0.7);
+        border-radius: 30px;
+        border: 1px solid #3a6a8a;
+        font-size: 10px;
+    }
 
-        .status-panel {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin: 8px 0;
-            padding: 5px 8px;
-            background: rgba(15, 24, 32, 0.7);
-            border-radius: 30px;
-            border: 1px solid #3a6a8a;
-            font-size: 10px;
-        }
+    .indicator {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+    }
 
-        .indicator {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
+    .light {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background-color: #2a4a6a;
+    }
+    .light.green { background-color: #6f6; box-shadow: 0 0 4px #6f6; }
+    .light.red { background-color: #f66; box-shadow: 0 0 4px #f66; }
 
-        .light {
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            background-color: #2a4a6a;
-        }
-        .light.green { background-color: #6f6; box-shadow: 0 0 4px #6f6; }
-        .light.red { background-color: #f66; box-shadow: 0 0 4px #f66; }
+    textarea, input {
+        width: 100%;
+        background: rgba(15, 24, 32, 0.8);
+        border: 1px solid #3a6a8a;
+        color: #e0f0ff;
+        font-family: monospace;
+        font-size: 11px;
+        padding: 6px;
+        margin: 5px 0;
+        border-radius: 12px;
+    }
 
-        textarea, input {
-            width: 100%;
-            background: rgba(15, 24, 32, 0.8);
-            border: 1px solid #3a6a8a;
-            color: #e0f0ff;
-            font-family: monospace;
-            font-size: 11px;
-            padding: 6px;
-            margin: 5px 0;
-            border-radius: 12px;
-        }
+    .button-group {
+        display: flex;
+        gap: 8px;
+        justify-content: center;
+        margin: 8px 0;
+    }
+    button {
+        background: #1e2f3f;
+        border: 1px solid #5a8aba;
+        color: #e0f0ff;
+        font-size: 11px;
+        padding: 5px 12px;
+        cursor: pointer;
+        border-radius: 30px;
+    }
+    button:hover:not(:disabled) {
+        background: #2e4a6a;
+    }
+    button:disabled { opacity: 0.4; }
 
-        .button-group {
-            display: flex;
-            gap: 8px;
-            justify-content: center;
-            margin: 8px 0;
-        }
-        button {
-            background: #1e2f3f;
-            border: 1px solid #5a8aba;
-            color: #e0f0ff;
-            font-size: 11px;
-            padding: 5px 12px;
-            cursor: pointer;
-            border-radius: 30px;
-        }
-        button:hover:not(:disabled) {
-            background: #2e4a6a;
-        }
-        button:disabled { opacity: 0.4; }
+    .response-area {
+        margin: 8px 0;
+        padding: 8px;
+        background: rgba(15, 26, 34, 0.7);
+        border-radius: 12px;
+        border-left: 3px solid #6a9aba;
+        font-size: 10px;
+        word-break: break-word;
+    }
 
-        .response-area {
-            margin: 8px 0;
-            padding: 8px;
-            background: rgba(15, 26, 34, 0.7);
-            border-radius: 12px;
-            border-left: 3px solid #6a9aba;
-            font-size: 10px;
-            word-break: break-word;
-        }
+    .cooldown-timer {
+        font-size: 9px;
+        text-align: center;
+        margin: 5px 0;
+    }
 
-        .cooldown-timer {
-            font-size: 9px;
-            text-align: center;
-            margin: 5px 0;
-        }
+    .copy-btn {
+        background: #1a2a3a;
+        border: 1px solid #5a8aba;
+        color: #aaccee;
+        padding: 3px 8px;
+        border-radius: 20px;
+        cursor: pointer;
+        display: inline-block;
+        font-size: 10px;
+    }
 
-        .copy-btn {
-            background: #1a2a3a;
-            border: 1px solid #5a8aba;
-            color: #aaccee;
-            padding: 3px 8px;
-            border-radius: 20px;
-            cursor: pointer;
-            display: inline-block;
-            font-size: 10px;
-        }
+    hr { border-color: #3a6a8a; margin: 8px 0; }
+    .footer { text-align: center; margin-top: 10px; font-size: 8px; color: #8aaccc; }
 
-        hr { border-color: #3a6a8a; margin: 8px 0; }
-        .footer { text-align: center; margin-top: 10px; font-size: 8px; color: #8aaccc; }
-
-        @keyframes sendPulse {
-            0% { text-shadow: 0 0 0 #8db5e5; }
-            100% { text-shadow: 0 0 6px #8db5e5; }
-        }
-        .sending { animation: sendPulse 0.3s ease-out; }
-    </style>
+    @keyframes sendPulse {
+        0% { text-shadow: 0 0 0 #8db5e5; }
+        100% { text-shadow: 0 0 6px #8db5e5; }
+    }
+    .sending { animation: sendPulse 0.3s ease-out; }
+</style>
 </head>
 <body>
 <div class="resonance-container">
