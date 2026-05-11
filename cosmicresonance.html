@@ -26,22 +26,32 @@
             width: 100%;
             max-width: 550px;
             margin: 0 auto;
-            background: #0f1820;
-            border-radius: 32px;
-            border: 2px solid #3a6a8a;
-            box-shadow: 0 0 20px rgba(0, 50, 80, 0.4);
-            overflow: hidden;
         }
+
+        .stars-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 32px;
+            z-index: 0;
+            opacity: 0.7;
+            pointer-events: none;
+        }
+
 
         .device-case {
             position: relative;
             width: 100%;
-            background-size: cover;
+            background: transparent;
+            background-size: contain;
             background-repeat: no-repeat;
             background-position: center;
-            min-height: 550px;
-            background-color: #0f1820;
+            z-index: 1;
         }
+
 
         .screen {
             position: absolute;
@@ -49,13 +59,14 @@
             left: 22%;
             width: 62%;
             height: 57%;
-            background: rgba(5, 10, 20, 0.55);
+            background: rgba(5, 10, 20, 0.5);
             backdrop-filter: blur(4px);
             border-radius: 20px;
-            padding: 12px;
+            padding: 10px;
             overflow-y: auto;
             box-shadow: inset 0 0 15px rgba(0, 20, 40, 0.5), 0 0 10px rgba(0, 50, 80, 0.3);
             color: #e0f0ff;
+            z-index: 2;
         }
 
         .content {
@@ -174,6 +185,10 @@
 </head>
 <body>
 <div class="resonance-container">
+
+    <img class="stars-bg" src="images/skystars.gif" alt="звёздное небо" loop autoplay muted>
+
+
     <div class="device-case" id="deviceCase">
         <div class="screen">
             <div class="content">
@@ -190,7 +205,7 @@
                 <textarea id="cosmicMessage" rows="2" placeholder="Твоё сообщение..."></textarea>
                 <div class="button-group">
                     <button id="testBtn">📡 ТЕСТ</button>
-                    <button id="sendBtn">✨ ОТПРАВИТЬ</button>
+                    <button id="sendBtn"> ОТПРАВИТЬ</button>
                 </div>
                 <div id="sendResponse" class="response-area"></div>
                 <div id="cooldownMessage" class="cooldown-timer"></div>
@@ -202,7 +217,7 @@
                 <button id="checkBtn">🔍 НАЙТИ</button>
                 <div id="checkResponse" class="response-area"></div>
 
-                <div class="footer">🌠 сигнал уходит в космос. ответ может не прийти.</div>
+                <div class="footer"> сигнал уходит в космос. ответ может не прийти.</div>
             </div>
         </div>
     </div>
@@ -211,10 +226,10 @@
 <script>
 
     const CORPUS_IMAGE_PATH = 'images/device_base.png';
+    const STARS_GIF_PATH = 'images/skystars.gif';
 
-    
     const deviceCase = document.getElementById('deviceCase');
-    
+    const starsBg = document.querySelector('.stars-bg');
 
     const imgTest = new Image();
     imgTest.onload = function() {
@@ -233,7 +248,14 @@
         deviceCase.style.backgroundImage = 'none';
     };
     imgTest.src = CORPUS_IMAGE_PATH;
+    
 
+    const gifTest = new Image();
+    gifTest.onerror = function() {
+        console.warn('❌ Гифка звёзд не найдена по пути:', STARS_GIF_PATH);
+        starsBg.style.display = 'none';
+    };
+    gifTest.src = STARS_GIF_PATH;
 
     const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwlZA55V1R-N17owF_slHhZjylw-Jlcpi1_NTbXAhdtiMczSmM1GCo70oH4VNU90suO/exec';
 
@@ -359,7 +381,7 @@
     checkBtn.addEventListener('click', async () => {
         const code = checkCodeInput.value.trim();
         if (!code) {
-            showResponse(checkResponseDiv, "Введи номер.", true);
+            showResponse(checkResponseDiv, "❄️ Введи номер.", true);
             return;
         }
         checkBtn.disabled = true;
