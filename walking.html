@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>Обсерватория</title>
+    <title>Обсерватория — путь к панораме</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <style>
         * {
@@ -18,161 +18,202 @@
             color: #bdd4ff;
             overflow-x: hidden;
             padding: 20px;
+            background-image: radial-gradient(circle at 20% 30%, #0f1820 0%, #0a0c12 100%);
         }
 
-        .slider {
-            width: 100%;
-            max-width: 800px;
-            margin: 20px auto;
-            text-align: center;
-            background: rgba(10, 15, 25, 0.6);
-            border-radius: 24px;
-            padding: 20px;
-            border: 1px solid #2a4a6a;
-        }
-
-        .slider img {
-            width: 100%;
-            border-radius: 16px;
-            border: 1px solid #3a6a8a;
-            box-shadow: 0 0 15px rgba(0,0,0,0.5);
-        }
-
-        .slider-buttons {
-            margin: 20px 0 10px;
+        
+        .journey-container {
+            max-width: 900px;
+            margin: 0 auto;
             display: flex;
-            gap: 15px;
-            justify-content: center;
+            flex-direction: column;
+            gap: 20px;
         }
 
-        .slider-buttons button {
+       
+        .slide-card {
+            background: rgba(10, 15, 25, 0.7);
+            backdrop-filter: blur(3px);
+            border-radius: 32px;
+            border: 1px solid #2a4a6a;
+            overflow: hidden;
+            transition: all 0.2s;
+        }
+
+        .slide-card img {
+            width: 100%;
+            display: block;
+            border-bottom: 1px solid #2a4a6a;
+        }
+
+        .caption {
+            padding: 15px 20px;
+            font-size: 13px;
+            color: #aaccee;
+            letter-spacing: 1px;
+            border-top: 1px dashed #2a4a6a;
+            background: rgba(5, 10, 20, 0.5);
+        }
+
+        /* Навигация — минималистичная, как шаги */
+        .navigation {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+            margin-top: 10px;
+        }
+
+        .nav-btn {
             background: #1a2a3a;
             border: 1px solid #3a6a8a;
             color: #bdd4ff;
-            padding: 10px 24px;
+            padding: 12px 24px;
             cursor: pointer;
             font-family: monospace;
             font-size: 16px;
-            border-radius: 40px;
+            border-radius: 60px;
             transition: 0.2s;
+            flex: 1;
+            text-align: center;
         }
 
-        .slider-buttons button:hover {
+        .nav-btn:hover {
             background: #2a3a4a;
             border-color: #6a9aba;
+            text-shadow: 0 0 4px #8db5e5;
         }
 
-        .instruction {
+        .step-counter {
+            font-size: 12px;
+            color: #6a8aaa;
             text-align: center;
-            margin: 15px 0 5px;
-            font-size: 13px;
-            opacity: 0.8;
+            margin: 10px 0 5px;
+            letter-spacing: 2px;
         }
 
-        .panorama-link {
-            display: none;
+        .final-link {
             text-align: center;
-            margin-top: 30px;
+            margin: 30px 0 20px;
             padding: 20px;
+            background: rgba(10, 15, 25, 0.6);
+            border-radius: 60px;
+            border: 1px dashed #4a7a9a;
+            display: none;
         }
 
-        .panorama-link a {
-            background: #1a2a3a;
+        .final-link a {
+            background: #1e3a4a;
             border: 1px solid #6a9aba;
-            color: #bdd4ff;
-            padding: 12px 30px;
+            color: #e0f0ff;
+            padding: 14px 30px;
             text-decoration: none;
             font-family: monospace;
             font-size: 18px;
-            border-radius: 40px;
+            border-radius: 60px;
+            display: inline-block;
             transition: 0.2s;
         }
 
-        .panorama-link a:hover {
-            background: #2a3a4a;
-            text-shadow: 0 0 4px #8db5e5;
+        .final-link a:hover {
+            background: #2e4a6a;
+            text-shadow: 0 0 6px #8db5e5;
+            box-shadow: 0 0 12px #2a6a8a;
         }
 
         .footer {
             text-align: center;
-            font-size: 11px;
-            margin-top: 20px;
+            font-size: 10px;
             color: #5a7a9a;
+            margin-top: 20px;
         }
 
         hr {
             border-color: #2a4a6a;
-            margin: 20px 0;
+            margin: 10px 0;
         }
     </style>
 </head>
 <body>
-
-<!-- === СЛАЙДЕР С АРХИВНЫМИ КАРТИНКАМИ === -->
-<div class="slider" id="slider">
-    <img id="sliderImage" src="" alt="Фрагмент архива">
-    <div class="slider-buttons">
-        <button id="prevBtn">← НАЗАД</button>
-        <button id="nextBtn">ДАЛЕЕ →</button>
+<div class="journey-container">
+    <div class="slide-card" id="slideCard">
+        <img id="slideImage" src="" alt="путь">
+        <div class="caption" id="slideCaption">— записи наблюдений —</div>
     </div>
-    <div class="instruction">листы архива. найди путь к панораме.</div>
-</div>
 
-<!-- === ССЫЛКА НА ПАНОРАМУ (появляется после последней картинки) === -->
-<div class="panorama-link" id="panoramaLink">
-    <a href="panorama.html" target="_blank">🔭 ПЕРЕЙТИ К ПАНОРАМЕ</a>
-    <p style="margin-top: 10px; font-size: 12px;">откроется в новой вкладке</p>
-</div>
+    <div class="step-counter" id="stepCounter">шаг 1 / 4</div>
+    <div class="navigation">
+        <button class="nav-btn" id="prevBtn">◀ НАЗАД</button>
+        <button class="nav-btn" id="nextBtn">ДАЛЕЕ ▶</button>
+    </div>
 
-<div class="footer">
-    ⚡ СТАНЦИЯ ПРИЁМА СИГНАЛА
+    <div class="final-link" id="panoramaLink">
+        <a href="panorama.html" target="_blank">🔭 ПЕРЕЙТИ К ПАНОРАМЕ</a>
+        <p style="margin-top: 12px; font-size: 11px; opacity: 0.7;">откроется в новой вкладке — завершающий этап</p>
+    </div>
+
+    <div class="footer">
+        ⚡ СТАНЦИЯ ПРИЁМА СИГНАЛА • НАБЛЮДЕНИЯ ЗАПИСАНЫ
+    </div>
 </div>
 
 <script>
     
     const archiveImages = [
-        "images/kondyor.jpg",  
-        "images/observatoryinrock.png",
-        "images/inrock2.png",
-        "images/vhod.png"
+        { src: "images/kondyor.jpg", caption: "Это место которого нет " },
+        { src: "images/Rocks-distant.png", caption: "На краю света. Вечереет..." },
+        { src: "images/landscape.png", caption: "Обсерватория вдали." },
+        { src: "images/vhod.png", caption: "Вход. Тишина... Последний шаг" }
     ];
-    
+
     let currentIndex = 0;
-    const sliderImg = document.getElementById("sliderImage");
+    const slideImage = document.getElementById("slideImage");
+    const slideCaption = document.getElementById("slideCaption");
     const prevBtn = document.getElementById("prevBtn");
     const nextBtn = document.getElementById("nextBtn");
     const panoramaLink = document.getElementById("panoramaLink");
-    
-    function updateImage() {
-        sliderImg.src = archiveImages[currentIndex];
-        
+    const stepCounter = document.getElementById("stepCounter");
+
+    function updateSlide() {
+        const item = archiveImages[currentIndex];
+        slideImage.src = item.src;
+        slideCaption.innerHTML = `✧ ${item.caption} ✧`;
+        stepCounter.innerHTML = `шаг ${currentIndex+1} / ${archiveImages.length}`;
+
         
         if (currentIndex === archiveImages.length - 1) {
             panoramaLink.style.display = "block";
-            nextBtn.textContent = " ЗАВЕРШИТЬ ОСМОТР";
+            nextBtn.textContent = "◼ ЗАВЕРШИТЬ";
         } else {
             panoramaLink.style.display = "none";
-            nextBtn.textContent = "ДАЛЕЕ →";
+            nextBtn.textContent = "ДАЛЕЕ ▶";
         }
     }
-    
+
     prevBtn.addEventListener("click", () => {
         if (currentIndex > 0) {
             currentIndex--;
-            updateImage();
+            updateSlide();
+        } else {
+            
+            slideCaption.style.opacity = "0.5";
+            setTimeout(() => { slideCaption.style.opacity = "1"; }, 200);
         }
     });
-    
+
     nextBtn.addEventListener("click", () => {
         if (currentIndex < archiveImages.length - 1) {
             currentIndex++;
-            updateImage();
+            updateSlide();
         }
-        
+
     });
+
     
+    updateSlide();
+
     
-    updateImage();
+
 </script>
 </body>
 </html>
